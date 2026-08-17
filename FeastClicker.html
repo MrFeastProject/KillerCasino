@@ -56,55 +56,63 @@ filter:drop-shadow(0 0 40px rgba(139,92,246,.6))}
 }
 body.is-android #splash img{width:auto;max-width:92vw;max-height:72vh;object-fit:contain}
 body.is-android #caseVideo{object-fit:contain}
-#loader{position:fixed;inset:0;z-index:200;background:#f2f2f3;overflow:hidden;transition:opacity .6s,visibility .6s}
+
+/* === НОВЫЙ SPLASH VIDEO LOADER (с белым фоном и узорами) === */
+#loader{position:fixed;inset:0;z-index:200;background:#ffffff;overflow:hidden;transition:opacity .6s,visibility .6s}
 #loader.done{opacity:0;visibility:hidden}
-#loader::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
-background:repeating-linear-gradient(0deg,rgba(0,0,0,.035) 0 1px,transparent 1px 3px)}
-#loader::after{content:'';position:absolute;left:0;right:0;bottom:96px;height:30%;pointer-events:none;
-background-image:radial-gradient(rgba(0,0,0,.14) 1px,transparent 1.4px);background-size:22px 22px;
--webkit-mask-image:linear-gradient(transparent,black);mask-image:linear-gradient(transparent,black)}
-.shot{position:absolute;background:#fff;padding:7px 7px 22px;box-shadow:0 18px 40px rgba(0,0,0,.28);z-index:2}
-.shot img{width:100%;height:100%;object-fit:cover;display:block}
-.shot1{left:7%;top:5%;width:48%;aspect-ratio:4/3;transform:rotate(-6deg);
-animation:drop1 .7s .1s cubic-bezier(.2,.9,.3,1.2) both}
-.shot2{right:6%;top:12%;width:44%;aspect-ratio:3/4;transform:rotate(5deg);
-animation:drop2 .7s .25s cubic-bezier(.2,.9,.3,1.2) both}
-.shot2 img{object-position:center 42%}
-.shot3{left:5%;top:36%;width:46%;aspect-ratio:16/9;transform:rotate(-3deg);
-animation:drop3 .7s .4s cubic-bezier(.2,.9,.3,1.2) both}
-.shot4{right:7%;top:44%;width:44%;aspect-ratio:16/9;transform:rotate(4deg);
-animation:drop4 .7s .55s cubic-bezier(.2,.9,.3,1.2) both}
-@keyframes drop1{from{opacity:0;transform:translateY(-40px) rotate(-14deg)}to{opacity:1;transform:rotate(-6deg)}}
-@keyframes drop2{from{opacity:0;transform:translateY(-40px) rotate(13deg)}to{opacity:1;transform:rotate(5deg)}}
-@keyframes drop3{from{opacity:0;transform:translateY(-40px) rotate(-11deg)}to{opacity:1;transform:rotate(-3deg)}}
-@keyframes drop4{from{opacity:0;transform:translateY(-40px) rotate(12deg)}to{opacity:1;transform:rotate(4deg)}}
-.load-news{position:absolute;top:18px;right:18px;z-index:3;display:flex;align-items:center;gap:10px;color:#8a8a8a;font-size:15px}
+#loader::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:0;
+  background:#ffffff;
+  background-image:
+    linear-gradient(rgba(139,92,246,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139,92,246,0.08) 1px, transparent 1px);
+  background-size:42px 42px;
+  pointer-events:none;
+}
+#splashVideo{
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:transparent;
+  z-index:1;
+}
+@media (min-width:760px){
+  #splashVideo{
+    object-fit:cover;
+  }
+}
+#loader-overlay{
+  position:absolute;
+  left:0;right:0;bottom:0;
+  z-index:4;
+  background:linear-gradient(180deg,transparent,rgba(0,0,0,.85) 40%);
+  padding:14px 20px 16px;
+  display:flex;flex-direction:column;gap:8px;
+  color:#fff;
+}
+.load-news{position:absolute;top:18px;right:18px;z-index:3;display:flex;align-items:center;gap:10px;color:#ccc;font-size:15px}
 .load-news .mega{width:42px;height:42px;background:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
-.load-news .mega::before{content:'';position:absolute;top:-8px;right:-8px;width:18px;height:18px;background:#f60;transform:rotate(45deg);z-index:-1;box-shadow:0 0 0 3px #f2f2f3}
-.load-logo{position:absolute;left:0;right:0;top:74%;transform:translateY(-50%);z-index:3;text-align:center;
-animation:logoIn .8s .6s both}
-@keyframes logoIn{from{opacity:0;transform:translateY(-46%) scale(.95)}to{opacity:1;transform:translateY(-50%) scale(1)}}
-@keyframes logoFade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-.load-logo svg{display:block;margin:0 auto 10px;filter:drop-shadow(0 0 6px rgba(242,242,243,.9))}
-.ll-name{font-family:'Inter','Manrope',system-ui,sans-serif;font-weight:900;font-size:clamp(18px,6vw,28px);letter-spacing:.02em;color:#141414;
-position:relative;display:block;width:fit-content;margin:0 auto;
-background:rgba(242,242,243,.9);padding:2px 14px;border-radius:10px;box-shadow:0 0 0 6px rgba(242,242,243,.9)}
-.ll-name::after{content:'';position:absolute;top:-10px;right:-16px;width:12px;height:12px;background:#f60;transform:rotate(45deg)}
-.ll-sub{font-size:9px;letter-spacing:.38em;margin-top:8px;color:#555;text-transform:uppercase;
-display:block;width:fit-content;margin:8px auto 0;background:rgba(242,242,243,.85);padding:2px 10px;border-radius:8px}
-.load-bar{position:absolute;left:0;right:0;bottom:0;z-index:4;background:#0a0a0a;padding:14px 20px 10px;display:flex;flex-direction:column;gap:8px}
+.load-news .mega::before{content:'';position:absolute;top:-8px;right:-8px;width:18px;height:18px;background:#f60;transform:rotate(45deg);z-index:-1;box-shadow:0 0 0 3px #000}
 .lb-row{display:flex;align-items:center;gap:16px}
-.lb-text{flex:1;text-align:center;color:#fff;font-size:14px}
+.lb-text{flex:1;text-align:center;color:#fff;font-size:14px;text-shadow:0 2px 6px rgba(0,0,0,.8)}
 #lbMsg::after{content:'...';animation:dots 1.2s steps(4) infinite}
 @keyframes dots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
-#lbPct{color:#9a9a9a;margin-left:6px;font-variant-numeric:tabular-nums}
-.lb-size{text-align:center;color:#bbb;font-size:12px;font-variant-numeric:tabular-nums;letter-spacing:.04em}
-.csspin{width:18px;height:18px;border-radius:50%;border:3px solid #333;border-top-color:#fff;animation:rot .9s linear infinite}
+#lbPct{color:#bbb;margin-left:6px;font-variant-numeric:tabular-nums}
+.lb-size{text-align:center;color:#ddd;font-size:12px;font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.csspin{width:18px;height:18px;border-radius:50%;border:3px solid #555;border-top-color:#fff;animation:rot .9s linear infinite}
 @keyframes rot{to{transform:rotate(360deg)}}
 .lb-row2{display:flex;align-items:center;gap:14px}
-.lb-ver{color:#666;font-size:10px;letter-spacing:.06em;white-space:nowrap}
-.lb-progress{flex:1;height:3px;position:relative;background:repeating-linear-gradient(90deg,#3a3a3a 0 6px,transparent 6px 10px)}
-.lb-progress i{position:absolute;inset:0;background:linear-gradient(90deg,#fff,#9a9a9a);transform-origin:left;transform:scaleX(0);transition:transform .15s}
+.lb-ver{color:#aaa;font-size:10px;letter-spacing:.06em;white-space:nowrap;text-shadow:0 1px 3px rgba(0,0,0,.8)}
+.lb-progress{flex:1;height:3px;position:relative;background:repeating-linear-gradient(90deg,#3a3a3a 0 6px,transparent 6px 10px);border-radius:2px}
+.lb-progress i{position:absolute;inset:0;background:linear-gradient(90deg,#fff,#9a9a9a);transform-origin:left;transform:scaleX(0);transition:transform .15s;border-radius:2px}
+/* === КОНЕЦ SPLASH VIDEO === */
+
 .loader-notification{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.96);
 display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:20px;
 opacity:0;pointer-events:none;transition:opacity .3s}
@@ -150,13 +158,7 @@ font-weight:700;font-size:14px;cursor:pointer;box-shadow:0 8px 24px rgba(124,58,
 animation:btnPulseN 2s ease-in-out infinite}
 @keyframes btnPulseN{0%,100%{box-shadow:0 8px 24px rgba(124,58,237,.4)}50%{box-shadow:0 8px 40px rgba(217,70,239,.8)}}
 .ln-btn.upd{background:linear-gradient(135deg,#2563eb,#3b82f6);box-shadow:0 8px 24px rgba(37,99,235,.4)}
-@media (min-width:760px){
-.shot1{left:6%;top:4%;right:auto;width:24%;max-width:400px}
-.shot2{right:6%;top:4%;left:auto;width:17%;max-width:270px}
-.shot3{left:10%;top:auto;bottom:28%;width:24%;max-width:400px}
-.shot4{right:10%;top:auto;bottom:28%;width:24%;max-width:400px}
-.load-logo{top:auto;bottom:12%;transform:none;animation:logoFade .8s .6s both}
-}
+
 .orb{position:fixed;border-radius:50%;opacity:.25;z-index:0;pointer-events:none;animation:float 12s ease-in-out infinite}
 .orb1{width:280px;height:280px;background:#7c3aed;top:-90px;left:-90px}
 .orb2{width:240px;height:240px;background:#d946ef;bottom:8%;right:-100px;animation-delay:-4s}
@@ -208,7 +210,6 @@ box-shadow:0 0 16px rgba(168,85,247,.8),inset 0 -3px 6px rgba(0,0,0,.35);animati
 background:linear-gradient(90deg,#c084fc,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent;
 filter:drop-shadow(0 0 12px rgba(168,85,247,.5))}
 .menu-sub{text-align:center;font-size:11px;letter-spacing:.3em;color:#8b7bb8;text-transform:uppercase}
-/* === БАННЕР «СОЗДАТЬ ЯРЛЫК» === */
 .home-banner{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border-radius:16px;cursor:pointer;
 border:1px solid rgba(251,191,36,.45);background:linear-gradient(135deg,rgba(251,191,36,.14),rgba(217,70,239,.10));
 color:#fde68a;text-align:left;box-shadow:0 0 18px rgba(251,191,36,.15);transition:transform .15s}
@@ -219,7 +220,6 @@ color:#fde68a;text-align:left;box-shadow:0 0 18px rgba(251,191,36,.15);transitio
 .hb-text span{display:block;font-size:11px;color:#c9b57f;margin-top:2px}
 .hb-plus{font-size:14px;color:#fbbf24}
 .home-banner[hidden]{display:none}
-/* === КОНЕЦ БАННЕР === */
 .mode-card{position:relative;border-radius:20px;overflow:hidden;height:140px;cursor:pointer;
 border:1px solid rgba(139,92,246,.45);box-shadow:0 12px 36px rgba(0,0,0,.55),0 0 22px rgba(124,58,237,.25);transition:transform .2s}
 .mode-card:active{transform:scale(.97)}
@@ -381,19 +381,14 @@ background:linear-gradient(135deg,#fde047,#f59e0b);box-shadow:0 0 30px rgba(251,
 .bonus-btn i{margin-right:8px}
 .disclaimer{text-align:center;font-size:10px;color:#5b4a80}
 .modal{position:fixed;inset:0;z-index:70;display:flex;align-items:center;justify-content:center;
-background:rgba(5,2,10,.8);opacity:0;pointer-events:none;transition:opacity .25s}
+background:rgba(5,2,10,.8);opacity:0;pointer-events:none;transition:opacity .25s;padding:16px;overflow-y:auto}
 .modal.show{opacity:1;pointer-events:auto}
 .pm-card{position:relative;width:min(92%,380px);border-radius:24px;padding:44px 20px 20px;text-align:center;
 background:linear-gradient(160deg,rgba(76,29,149,.5),rgba(15,8,30,.94));
 border:1px solid rgba(168,85,247,.45);box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 40px rgba(124,58,237,.25);
-transform:scale(.85);transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+transform:scale(.85);transition:transform .3s cubic-bezier(.34,1.56,.64,1);margin:auto 0;overflow:hidden}
 .modal.show .pm-card{transform:scale(1)}
-.pm-close{position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:14px;
-border:1px solid rgba(139,92,246,.35);background:rgba(30,15,60,.6);color:#e9d5ff;font-size:18px;
-display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;transition:transform .1s,background .2s}
-.pm-close:active{transform:scale(0.9);}
-.pm-close:hover{background:rgba(139,92,246,.2);}
-.pm-id{position:absolute;top:20px;left:16px;font-size:11px;color:#8b7bb8}
+.pm-id{position:absolute;top:4px;left:10px;font-size:11px;color:#8b7bb8;z-index:5}
 .pm-id b{color:#c4b5fd}
 .pm-avatar{width:110px;height:110px;border-radius:50%;margin:4px auto 12px;overflow:hidden;
 background:conic-gradient(from 200deg,#7c3aed,#d946ef,#7c3aed);
@@ -409,6 +404,119 @@ background:rgba(30,15,60,.45);border:1px solid rgba(139,92,246,.2);font-size:13p
 .pm-row i{flex:none;width:18px;text-align:center;color:#c084fc;font-size:14px}
 .pm-row .k{color:#8b7bb8;width:56px;flex:none}
 .pm-row .v{color:#e9d5ff;font-weight:600;word-break:break-all}
+.pm-row.clickable{cursor:pointer;transition:all .15s;border:1px solid rgba(217,70,239,.35);background:linear-gradient(135deg,rgba(139,92,246,.2),rgba(217,70,239,.1));}
+.pm-row.clickable:active{transform:scale(.98)}
+.pm-row.clickable:hover{border-color:rgba(217,70,239,.7);box-shadow:0 0 14px rgba(217,70,239,.35)}
+.pm-row.clickable .v{color:#f0abfc;font-weight:700}
+
+/* === Фон профиля с прозрачностью 89% === */
+.pm-card.with-bg {
+  position: relative;
+}
+.pm-card.with-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--bg-image, none) center/cover no-repeat;
+  opacity: 0.89;
+  z-index: 0;
+  border-radius: 24px;
+}
+.pm-card.with-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* === КАСТОМИЗАЦИЯ ПРОФИЛЯ === */
+.custom-modal{position:fixed;inset:0;z-index:75;display:flex;align-items:center;justify-content:center;
+background:rgba(5,2,10,.92);opacity:0;pointer-events:none;transition:opacity .3s;padding:16px;overflow-y:auto}
+.custom-modal.show{opacity:1;pointer-events:auto}
+.custom-card{position:relative;width:min(96%,720px);border-radius:24px;padding:44px 12px 24px;
+background:linear-gradient(160deg,rgba(76,29,149,.55),rgba(15,8,30,.96));
+border:1px solid rgba(168,85,247,.45);box-shadow:0 20px 60px rgba(0,0,0,.7),0 0 40px rgba(124,58,237,.25);
+transform:scale(.9);transition:transform .3s cubic-bezier(.34,1.56,.64,1);margin:auto 0;overflow-x:hidden;max-width:100%}
+.custom-modal.show .custom-card{transform:scale(1)}
+.custom-title{font-family:'Unbounded';font-weight:800;font-size:20px;letter-spacing:.08em;text-align:center;margin-bottom:18px;
+background:linear-gradient(90deg,#c084fc,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent;
+filter:drop-shadow(0 0 12px rgba(168,85,247,.6))}
+.custom-body{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+@media (max-width:600px){
+.custom-body{grid-template-columns:1fr;gap:16px}
+.custom-card{padding:44px 8px 20px}
+.custom-preview{min-height:auto}
+.custom-preview-profile{min-height:140px;padding:10px}
+}
+.custom-divider-v{display:none}
+@media (min-width:601px){
+.custom-divider-v{display:block;position:absolute;top:60px;bottom:24px;left:50%;width:2px;transform:translateX(-50%);
+background:linear-gradient(180deg,transparent,rgba(168,85,247,.6),transparent)}
+}
+.custom-list{display:flex;flex-direction:column;gap:10px}
+.custom-item{padding:14px;border-radius:14px;border:1px solid rgba(139,92,246,.3);
+background:rgba(30,15,60,.45);cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.custom-item:active{transform:scale(.98)}
+.custom-item.selected{border-color:rgba(74,222,128,.7);background:rgba(34,197,94,.12);box-shadow:0 0 16px rgba(74,222,128,.25)}
+.custom-item.locked{opacity:.55;cursor:not-allowed;filter:grayscale(.6)}
+.custom-item.locked::after{content:'🔒';position:absolute;top:10px;right:12px;font-size:14px;opacity:.8}
+.custom-item-top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.custom-item-thumb{width:42px;height:42px;border-radius:10px;overflow:hidden;flex:none;
+background:linear-gradient(135deg,#1d1038,#0c051e);border:1px solid rgba(139,92,246,.3);
+display:flex;align-items:center;justify-content:center;font-size:18px;color:#8b7bb8}
+.custom-item-thumb img{width:100%;height:100%;object-fit:cover}
+.custom-item-name{font-family:'Unbounded';font-weight:700;font-size:14px;color:#e9d5ff;flex:1}
+.custom-item-status{font-size:11px;letter-spacing:.1em;color:#8b7bb8;font-weight:700;text-transform:uppercase}
+.custom-item.selected .custom-item-status{color:#4ade80}
+.custom-item.locked .custom-item-status{color:#ff6b6b}
+.custom-preview{
+  padding:14px;border-radius:16px;
+  border:1px solid rgba(139,92,246,.3);
+  background:rgba(10,5,20,.6);
+  min-height:360px;
+}
+.custom-preview-title{font-size:10px;letter-spacing:.3em;color:#8b7bb8;text-transform:uppercase;text-align:center;margin-bottom:12px}
+.custom-preview-profile{
+  position:relative;
+  border-radius:14px;
+  overflow:hidden;
+  padding:14px;
+  min-height:180px;
+  display:flex;align-items:center;gap:10px;
+  background-size:cover;background-position:center;
+  border:1px solid rgba(139,92,246,.3);
+  transition:background-image .4s;
+}
+.custom-preview-profile.base{background:#1d1038;}
+.custom-preview-profile > *{position:relative;z-index:2}
+.custom-preview-profile.with-bg{
+  background:linear-gradient(160deg,rgba(76,29,149,.5),rgba(15,8,30,.94));
+}
+.custom-preview-profile.with-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--bg-image, none) center/cover no-repeat;
+  opacity: 0.89;
+  z-index: 0;
+  border-radius: 14px;
+}
+.custom-preview-profile.with-bg > * {
+  position: relative;
+  z-index: 1;
+}
+.preview-avatar{flex:none;width:52px;height:52px;border-radius:50%;overflow:hidden;
+background:conic-gradient(from 200deg,#7c3aed,#d946ef,#7c3aed);
+display:flex;align-items:center;justify-content:center;font-family:'Unbounded';font-weight:800;font-size:20px;
+border:2px solid rgba(217,70,239,.6);box-shadow:0 0 18px rgba(168,85,247,.55)}
+.preview-avatar img{width:100%;height:100%;object-fit:cover}
+.preview-info{flex:1;min-width:0;color:#fff}
+.preview-name{font-family:'Unbounded';font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.preview-user{font-size:12px;color:#a78bfa;margin-top:2px}
+.preview-balance{margin-top:8px;padding:6px 10px;border-radius:8px;
+background:rgba(0,0,0,.35);border:1px solid rgba(139,92,246,.3);
+display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#f3e8ff;font-weight:700}
+.custom-preview-label{margin-top:12px;font-size:10px;letter-spacing:.2em;color:#8b7bb8;text-transform:uppercase;text-align:center}
+/* === КОНЕЦ КАСТОМИЗАЦИИ === */
+
 .settings-card{padding:26px 20px 20px;text-align:left}
 .settings-title{font-family:'Unbounded';font-weight:800;font-size:20px;letter-spacing:.08em;text-align:center;margin-bottom:18px;
 background:linear-gradient(90deg,#c084fc,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent;
@@ -491,7 +599,11 @@ transition:transform .2s,box-shadow .2s;padding:12px;text-align:center}
 .shop-item-title{font-family:'Unbounded';font-weight:700;font-size:13px;color:#e9d5ff;margin-bottom:4px}
 .shop-item-price{font-family:'Unbounded';font-weight:800;font-size:14px;color:#f0abfc;
 display:flex;align-items:center;justify-content:center;gap:6px}
+.shop-item-price.free{color:#4ade80}
 .shop-item-price i{font-size:12px}
+.shop-item-badge{position:absolute;top:8px;right:8px;padding:2px 8px;border-radius:8px;
+background:linear-gradient(135deg,#059669,#34d399);color:#fff;font-family:'Unbounded';font-size:9px;font-weight:800;letter-spacing:.1em;
+box-shadow:0 0 10px rgba(52,211,153,.5)}
 .car-list{display:flex;flex-direction:column;gap:12px;margin-top:8px}
 .car-item{display:flex;align-items:center;gap:12px;padding:10px;border-radius:18px;
 border:1px solid rgba(139,92,246,.35);background:linear-gradient(160deg,rgba(30,15,60,.6),rgba(10,5,20,.85));
@@ -526,6 +638,7 @@ box-shadow:0 8px 30px rgba(220,38,38,.5),inset 0 1px 0 rgba(255,255,255,.25);
 animation:btnPulseRed 2.2s ease-in-out infinite;transition:transform .15s}
 .case-open-btn:active{transform:scale(.96)}
 .case-open-btn:disabled{filter:grayscale(.6) brightness(.65);animation:none;cursor:default}
+.case-open-btn.free{background:linear-gradient(135deg,#059669,#34d399);box-shadow:0 8px 30px rgba(16,185,129,.5)}
 @keyframes btnPulseRed{0%,100%{box-shadow:0 8px 26px rgba(220,38,38,.45)}50%{box-shadow:0 8px 46px rgba(239,68,68,.8)}}
 .case-chances{margin-top:20px;padding:14px;border-radius:14px;
 background:rgba(30,15,60,.6);border:1px solid rgba(255,60,60,.3);
@@ -576,10 +689,255 @@ box-shadow:0 8px 30px rgba(220,38,38,.5),inset 0 1px 0 rgba(255,255,255,.25)}
 background:linear-gradient(135deg,rgba(15,23,42,.95),rgba(30,41,59,.95));backdrop-filter:blur(20px);
 opacity:0;pointer-events:none;transition:opacity .4s}
 #updateOverlay.show{opacity:1;pointer-events:auto}
-/* === ОТСТУП ПОД ПЛАВАЮЩИЕ КНОПКИ TELEGRAM В ФУЛЛСКРИНЕ === */
 body.tg-fullscreen .app{padding-top:96px}
 body.tg-fullscreen .load-news{top:96px}
-/* === КОНЕЦ ОТСТУП === */
+
+/* НОВЫЕ КНОПКИ ВНИЗУ МОДАЛОК */
+.modal-btn {
+  display:block;
+  width:100%;
+  padding:14px;
+  margin-top:18px;
+  border:none;
+  border-radius:14px;
+  font-family:'Unbounded',sans-serif;
+  font-weight:700;
+  font-size:14px;
+  color:#fff;
+  background:linear-gradient(135deg,#6d28d9,#a855f7 45%,#d946ef);
+  cursor:pointer;
+  transition:transform .15s, box-shadow .2s;
+  box-shadow:0 8px 24px rgba(124,58,237,.4);
+}
+.modal-btn:active{transform:scale(.96)}
+.modal-btn.close{background:linear-gradient(135deg,#4a4a6a,#6b6b8f);box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.modal-btn.apply{background:linear-gradient(135deg,#059669,#34d399);box-shadow:0 8px 24px rgba(16,185,129,.4)}
+
+/* FTAC BAN SCREEN — УСТРАШАЮЩИЙ ДИЗАЙН */
+#ftacBanScreen {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: #0a0000;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  min-height: 100vh;
+  overflow-y: auto;
+  animation: bgPulse 2s ease-in-out infinite alternate;
+}
+@keyframes bgPulse {
+  0% { background: #1a0000; }
+  100% { background: #2a0000; }
+}
+#ftacBanScreen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255,0,0,0.03) 0px,
+    rgba(255,0,0,0.03) 2px,
+    transparent 2px,
+    transparent 6px
+  );
+  pointer-events: none;
+  z-index: 1;
+  animation: scanLines 4s linear infinite;
+}
+@keyframes scanLines {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(100%); }
+}
+#ftacBanScreen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      rgba(255,0,0,0.04) 40px,
+      rgba(255,0,0,0.04) 41px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 40px,
+      rgba(255,0,0,0.04) 40px,
+      rgba(255,0,0,0.04) 41px
+    );
+  pointer-events: none;
+  z-index: 1;
+  animation: patternRotate 20s linear infinite;
+}
+@keyframes patternRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+#ftacBanScreen > * { position: relative; z-index: 2; }
+#ftacAvatar {
+  width: min(220px, 60vw);
+  height: auto;
+  border: none;
+  border-radius: 0;
+  object-fit: contain;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 0 40px rgba(255,0,0,0.8)) drop-shadow(0 0 80px rgba(255,0,0,0.4));
+  animation: avatarPulse 2s ease-in-out infinite alternate;
+}
+@keyframes avatarPulse {
+  0% { filter: drop-shadow(0 0 20px rgba(255,0,0,0.6)) drop-shadow(0 0 60px rgba(255,0,0,0.3)); }
+  100% { filter: drop-shadow(0 0 60px rgba(255,50,50,1)) drop-shadow(0 0 120px rgba(255,0,0,0.6)); }
+}
+#ftacBanScreen h1 {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 800;
+  font-size: clamp(26px, 6vw, 42px);
+  background: linear-gradient(135deg, #ff0000, #ff3333, #cc0000, #ff0000);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 12px;
+  text-shadow: 0 0 30px rgba(255,0,0,0.5);
+  animation: glitch 1.5s infinite, gradientShift 3s ease infinite;
+  position: relative;
+}
+@keyframes glitch {
+  0%, 90%, 100% { transform: translate(0); }
+  92% { transform: translate(-2px, 2px); }
+  94% { transform: translate(2px, -2px); }
+  96% { transform: translate(-1px, 1px); }
+  98% { transform: translate(1px, -1px); }
+}
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+#ftacBanScreen h1::after {
+  content: 'FeastTurboAntiCheat Detect You!';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #ff0000, #ff3333, #cc0000, #ff0000);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  opacity: 0.3;
+  transform: translate(3px, 3px);
+  z-index: -1;
+  animation: gradientShift 3s ease infinite;
+}
+#ftacBanScreen p {
+  font-family: 'Manrope', sans-serif;
+  font-size: clamp(14px, 2.5vw, 18px);
+  color: #ff9999;
+  max-width: 560px;
+  line-height: 1.8;
+  margin-bottom: 12px;
+  text-shadow: 0 0 10px rgba(255,0,0,0.2);
+}
+#ftacBanScreen p b {
+  color: #ff4444;
+  text-shadow: 0 0 20px rgba(255,0,0,0.6);
+}
+#ftacBanScreen .desc {
+  font-family: 'Manrope', sans-serif;
+  font-size: clamp(13px, 2vw, 16px);
+  color: #bb8888;
+  max-width: 520px;
+  line-height: 1.7;
+  margin-bottom: 24px;
+  opacity: 0.9;
+}
+#ftacBanScreen .corner-frame {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255,0,0,0.3);
+  z-index: 3;
+  animation: cornerPulse 2s ease-in-out infinite alternate;
+}
+#ftacBanScreen .corner-frame.tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+#ftacBanScreen .corner-frame.tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+#ftacBanScreen .corner-frame.bl { bottom: 20px; left: 20px; border-right: none; border-top: none; }
+#ftacBanScreen .corner-frame.br { bottom: 20px; right: 20px; border-left: none; border-top: none; }
+@keyframes cornerPulse {
+  0% { border-color: rgba(255,0,0,0.2); }
+  100% { border-color: rgba(255,50,50,0.8); }
+}
+#ftacBanScreen .btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: min(100%, 340px);
+  margin-top: 8px;
+}
+#ftacBanScreen .btn-group button {
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+  overflow: hidden;
+}
+#ftacBanScreen .btn-group button:active {
+  transform: scale(0.94);
+}
+#ftacBanScreen .btn-exit {
+  background: linear-gradient(135deg, #cc0000, #ff1a1a);
+  box-shadow: 0 0 30px rgba(255,0,0,0.5);
+}
+#ftacBanScreen .btn-exit:hover {
+  box-shadow: 0 0 50px rgba(255,0,0,0.8);
+}
+#ftacBanScreen .btn-contact {
+  background: linear-gradient(135deg, #006644, #00b377);
+  box-shadow: 0 0 30px rgba(0,200,100,0.3);
+}
+#ftacBanScreen .btn-contact:hover {
+  box-shadow: 0 0 50px rgba(0,200,100,0.6);
+}
+#ftacBanScreen .btn-group button::after {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+#ftacBanScreen .btn-group button:active::after {
+  opacity: 1;
+  animation: ripple 0.6s ease-out;
+}
+@keyframes ripple {
+  0% { transform: scale(0.5); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+@media (max-width: 480px) {
+  #ftacBanScreen { padding: 16px; }
+  #ftacBanScreen h1 { font-size: 22px; }
+  #ftacBanScreen p { font-size: 13px; }
+  #ftacBanScreen .desc { font-size: 12px; }
+  .corner-frame { width: 25px; height: 25px; }
+}
 </style>
 </head>
 <body>
@@ -588,19 +946,11 @@ body.tg-fullscreen .load-news{top:96px}
 </div>
 <canvas id="confetti"></canvas>
 <div id="loader">
-<div class="shot shot1"><img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/10dd3e1f7-b63b-499c-b661-d8c80ce1588a.png" alt="" data-resource="img1"></div>
-<div class="shot shot2"><img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Screenshot_20260806_124909_Telegram.jpg" alt="" data-resource="img2"></div>
-<div class="shot shot3"><img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260806_161146468.jpg" alt="" data-resource="img3"></div>
-<div class="shot shot4"><img src="https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Polish_20260807_002155396.jpg" alt="" data-resource="img4"></div>
+<video id="splashVideo" playsinline loop preload="auto"></video>
 <div class="load-news">Новости
 <span class="mega"><svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M3 10v4h4l6 5V5L7 10H3z"/><path d="M16.5 8.5a4.2 4.2 0 0 1 0 7" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span>
 </div>
-<div class="load-logo">
-<svg width="110" height="92" viewBox="0 0 180 150"><polygon points="90,4 176,146 4,146" fill="none" stroke="#141414" stroke-width="7"/></svg>
-<div class="ll-name">MrFeastProject</div>
-<div class="ll-sub">presents · Killercasino</div>
-</div>
-<div class="load-bar">
+<div id="loader-overlay">
 <div class="lb-row">
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 3v8"/><path d="M6.2 6.2a8.2 8.2 0 1 0 11.6 0"/></svg>
 <div class="lb-text"><span id="lbMsg">// Инициализация игры</span><span id="lbPct">(00.00%)</span></div>
@@ -608,11 +958,28 @@ body.tg-fullscreen .load-news{top:96px}
 </div>
 <div class="lb-size" id="lbSize" style="display:none">0 B / 0 B</div>
 <div class="lb-row2">
-<span class="lb-ver">MRFEAST_PROJECT_REL_1.0.7_K8097568_E9083908</span>
+<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.2_K2297569_E109786</span>
 <div class="lb-progress"><i id="lbFill"></i></div>
 </div>
 </div>
 </div>
+
+<!-- FTAC БАН -->
+<div id="ftacBanScreen">
+  <div class="corner-frame tl"></div>
+  <div class="corner-frame tr"></div>
+  <div class="corner-frame bl"></div>
+  <div class="corner-frame br"></div>
+  <img id="ftacAvatar" src="" alt="FTAC">
+  <h1>FeastTurboAntiCheat Detect You!</h1>
+  <p>АнтиЧит система обнаружила ваш аккаунт в списке банов по причине <b id="ftacBanReasonDisplay">...</b> и заблокировала дальнейший вход в игру и различные манипуляции.</p>
+  <p class="desc">Если бан ошибочный, а причина не указана (Unknown) или хотите обговорить ваш бан с возможностью получения дальнейшего доступа в игру, то нажмите на кнопку ниже "Написать нам" и обговорите бан в личном чате с владельцем игры.</p>
+  <div class="btn-group">
+    <button class="btn-exit" id="ftacExitBtn">Выйти</button>
+    <button class="btn-contact" id="ftacContactBtn">Написать нам</button>
+  </div>
+</div>
+
 <div class="loader-notification" id="loaderNotification">
 <div class="ln-icon"><i class="fa-solid fa-exclamation-triangle"></i></div>
 <div class="ln-title">Внимание</div>
@@ -855,9 +1222,8 @@ animation:shine 3s linear infinite,pulse 2s ease-in-out infinite">
 <button class="bonus-btn" id="bonusBtn" hidden><i class="fa-solid fa-gift"></i>Монеты закончились — забрать 1000!</button>
 </div>
 <div class="modal" id="profileModal">
-<div class="pm-card">
+<div class="pm-card" id="pmCard">
 <div class="pm-id">ID: <b id="pmId">—</b></div>
-<button class="pm-close" id="pmClose"><i class="fa-solid fa-xmark"></i></button>
 <div class="pm-avatar" id="pmAvatar">?</div>
 <div class="pm-name" id="pmName">—</div>
 <div class="pm-user" id="pmUser">—</div>
@@ -866,8 +1232,35 @@ animation:shine 3s linear infinite,pulse 2s ease-in-out infinite">
 <div class="pm-row"><i class="fa-solid fa-mobile-screen-button"></i><span class="k">OS:</span><span class="v" id="pmOs">—</span></div>
 <div class="pm-row"><i class="fa-solid fa-globe"></i><span class="k">IP:</span><span class="v" id="pmIp">определяем…</span></div>
 <div class="pm-row"><i class="fa-solid fa-location-dot"></i><span class="k">Город:</span><span class="v" id="pmCity">определяем…</span></div>
+<div class="pm-row clickable" id="pmStyleBtn"><i class="fa-solid fa-palette"></i><span class="k">Стиль:</span><span class="v" id="pmStyleName">Базовый</span><i class="fa-solid fa-chevron-right" style="margin-left:auto;color:#f0abfc"></i></div>
+<button class="modal-btn close" id="pmCloseBtn">Закрыть</button>
 </div>
 </div>
+
+<!-- МОДАЛКА КАСТОМИЗАЦИИ ПРОФИЛЯ -->
+<div class="custom-modal" id="customModal">
+<div class="custom-card">
+<div class="custom-title">КАСТОМИЗАЦИЯ ПРОФИЛЯ</div>
+<div class="custom-body">
+<div class="custom-list" id="customList"></div>
+<div class="custom-preview">
+<div class="custom-preview-title">Предварительный просмотр</div>
+<div class="custom-preview-profile base" id="customPreviewProfile">
+<div class="preview-avatar" id="previewAvatar">?</div>
+<div class="preview-info">
+<div class="preview-name" id="previewName">—</div>
+<div class="preview-user" id="previewUser">—</div>
+<div class="preview-balance"><i class="fa-solid fa-coins" style="color:#fbbf24"></i><span id="previewBalance">0</span></div>
+</div>
+</div>
+<div class="custom-preview-label" id="customPreviewLabel">Текущий стиль</div>
+</div>
+</div>
+<div class="custom-divider-v"></div>
+<button class="modal-btn apply" id="customApplyBtn">Применить</button>
+</div>
+</div>
+
 <div class="modal" id="settingsModal">
 <div class="pm-card settings-card">
 <button class="pm-close" id="settingsClose"><i class="fa-solid fa-xmark"></i></button>
@@ -944,41 +1337,39 @@ animation:shine 3s linear infinite,pulse 2s ease-in-out infinite">
 </div>
 </div>
 <script>
-const tg = window.Telegram && window.Telegram.WebApp;
+// ============================================================
+// ИСПРАВЛЕНИЕ #4: Безопасная инициализация Telegram
+// ============================================================
+const tg = window.Telegram?.WebApp || {};
 const isAndroid = /Android/.test(navigator.userAgent);
 if(isAndroid) document.body.classList.add('is-android');
-if (tg){
-  try{ tg.ready(); tg.expand(); tg.setHeaderColor('#06030d'); tg.setBackgroundColor('#06030d'); }catch(e){}
-  // === АВТО-ФУЛЛСКРИН НА ANDROID (как у GigaChat — убирает верхнюю панель с названием) ===
-  try{
-    if (isAndroid && typeof tg.requestFullscreen === 'function' && !tg.isFullscreen){
-      tg.requestFullscreen();
-    }
-  }catch(e){}
+if (tg && typeof tg.ready === 'function'){
+try{ tg.ready(); tg.expand(); tg.setHeaderColor('#06030d'); tg.setBackgroundColor('#06030d'); }catch(e){}
+try{
+if (isAndroid && typeof tg.requestFullscreen === 'function' && !tg.isFullscreen){
+tg.requestFullscreen();
 }
-// Фолбэк: если Telegram не дал фуллскрин сразу — пробуем ещё раз при первом тапе
+}catch(e){}
+}
 if (isAndroid && tg && typeof tg.requestFullscreen === 'function'){
-  const retryFS = ()=>{ try{ if(!tg.isFullscreen) tg.requestFullscreen(); }catch(e){} };
-  document.addEventListener('pointerdown', function onceFS(){
-    retryFS();
-    document.removeEventListener('pointerdown', onceFS);
-  });
+const retryFS = ()=>{ try{ if(!tg.isFullscreen) tg.requestFullscreen(); }catch(e){} };
+document.addEventListener('pointerdown', function onceFS(){
+retryFS();
+document.removeEventListener('pointerdown', onceFS);
+});
 }
-// === СДВИГ КОНТЕНТА ПОД ПЛАВАЮЩИЕ КНОПКИ (X / МЕНЮ) В ФУЛЛСКРИНЕ ===
 function applyFullscreenPadding(){
-  try{
-    if(tg && tg.isFullscreen) document.body.classList.add('tg-fullscreen');
-    else document.body.classList.remove('tg-fullscreen');
-  }catch(e){}
+try{
+if(tg && tg.isFullscreen) document.body.classList.add('tg-fullscreen');
+else document.body.classList.remove('tg-fullscreen');
+}catch(e){}
 }
 applyFullscreenPadding();
 if(tg && typeof tg.onEvent === 'function'){
-  try{ tg.onEvent('fullscreenChanged', applyFullscreenPadding); }catch(e){}
+try{ tg.onEvent('fullscreenChanged', applyFullscreenPadding); }catch(e){}
 }
-// страховка: фуллскрин включается асинхронно
 setTimeout(applyFullscreenPadding, 300);
 setTimeout(applyFullscreenPadding, 1200);
-// === КОНЕЦ СДВИГ ===
 document.addEventListener('contextmenu', e => e.preventDefault());
 document.addEventListener('dragstart', e => e.preventDefault());
 document.addEventListener('selectstart', e => e.preventDefault());
@@ -991,6 +1382,8 @@ function tryTelegramFS(){ try{ if(tg && typeof tg.requestFullscreen==='function'
 function tryBrowserFS(){ try{ if(!document.fullscreenElement && document.documentElement.requestFullscreen){ document.documentElement.requestFullscreen().then(()=>window.removeEventListener('pointerdown',fsHandler)).catch(()=>{}); } }catch(e){} }
 function fsHandler(){ if(document.fullscreenElement){window.removeEventListener('pointerdown',fsHandler);return;} if(!tryTelegramFS()) tryBrowserFS(); }
 if(/Windows/.test(navigator.userAgent)){ if(!tryTelegramFS()) window.addEventListener('pointerdown',fsHandler); }
+
+// === РЕСУРСЫ (с добавлением FTAC) ===
 const RESOURCE_LIST=[
 {id:'splash',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/178619611140f8.png'},
 {id:'img1', url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/10dd3e1f7-b63b-499c-b661-d8c80ce1588a.png'},
@@ -1033,10 +1426,19 @@ const RESOURCE_LIST=[
 {id:'voice8', url:'https://raw.githubusercontent.com/MrFeastProject/200MB/main/Voice8.txt', size: 20489598},
 {id:'voice9', url:'https://raw.githubusercontent.com/MrFeastProject/200MB/main/Voice9.txt', size: 20489598},
 {id:'voice10',url:'https://raw.githubusercontent.com/MrFeastProject/200MB/main/Voice10.txt', size: 20489598},
-{id:'bgMusic',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Classic_Easter.mp3'}
+{id:'bgMusic',url:'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/Classic_Easter.mp3'},
+// === НОВЫЕ РЕСУРСЫ ===
+{id:'splashVideo', url:'https://raw.githubusercontent.com/MrFeastProject/KillerCasino-Resourses/refs/heads/main/SpashScreen.mp4'},
+{id:'profileStyle1', url:'https://raw.githubusercontent.com/MrFeastProject/KillerCasino-Resourses/refs/heads/main/ProfileStyle1(MrFeast_Official).jpg'},
+{id:'profileStyleNinja', url:'https://raw.githubusercontent.com/MrFeastProject/KillerCasino-Resourses/refs/heads/main/ProfileStyle_Ninjia.jpg'},
+{id:'darkStyleVideo', url:'https://raw.githubusercontent.com/MrFeastProject/KillerCasino-Resourses/refs/heads/main/21238b45-839f-429f-971b-5207228a2227.mp4'},
+{id:'darkStyleImg', url:'https://raw.githubusercontent.com/MrFeastProject/KillerCasino-Resourses/refs/heads/main/1786629634.png'},
+// === FTAC РЕСУРСЫ ===
+{id:'ftacAvatar', url:'https://raw.githubusercontent.com/MrFeastProject/KillerCasino-Resourses/refs/heads/main/file_00000000763481f4af0841c4342ab13a.png'},
+{id:'banList', url:'https://raw.githubusercontent.com/MrFeastProject/KillerCasino-Resourses/refs/heads/main/BanList.txt'}
 ];
 const RESOURCE_MAP={};RESOURCE_LIST.forEach(r=>RESOURCE_MAP[r.id]=r);
-const CURRENT_VERSION = (document.querySelector('.lb-ver') ? document.querySelector('.lb-ver').textContent.trim() : 'MRFEAST_PROJECT_REL_1.0.7_K8097568_E8083906');
+const CURRENT_VERSION = (document.querySelector('.lb-ver') ? document.querySelector('.lb-ver').textContent.trim() : 'MRFEAST_PROJECT_REL_1.1.2_K2297568_E109783');
 const UPDATE_CHECK_URL = 'https://raw.githubusercontent.com/MrFeastProject/MrFeastInfo/refs/heads/main/KillerCasino.html';
 let updateCheckInterval = null;
 let updateCheckBusy = false;
@@ -1044,6 +1446,403 @@ const DB_NAME = 'KillerCasinoResources';
 const STORE_RESOURCES = 'resources';
 const STORE_INDEX = 'resource_index';
 const STORE_URLS = 'resource_urls';
+
+// === FTAC ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ===
+let ftacBanned = false;
+let ftacBanReason = '';
+let ftacVersion = 'v1.0.0';
+let ftacBannedUserId = null;
+const FTAC_LOCAL_VERSION_KEY = 'ftac_local_version';
+const FTAC_BAN_LIST_KEY = 'ftac_ban_list';
+
+function getUserId(){
+    return TG_USER && TG_USER.id ? String(TG_USER.id) : null;
+}
+
+function parseBanList(text){
+    const result = { version: '', bans: {} };
+    const lines = text.split('\n').filter(line => line.trim() !== '');
+    for (const line of lines) {
+        const trimmed = line.trim();
+        if (trimmed.startsWith('v') && trimmed.includes('==BanList==')) {
+            result.version = trimmed.split(' ')[0];
+            continue;
+        }
+        const match = trimmed.match(/^(\d+)\s*-\s*(.+)$/);
+        if (match) {
+            result.bans[match[1]] = match[2].trim();
+        }
+    }
+    return result;
+}
+
+async function checkBanWithUpdate() {
+    const userId = getUserId();
+    if (!userId) return { banned: false, reason: null, updated: false };
+
+    let banText = await resGet('banList');
+    if (!banText) {
+        try {
+            const blob = await fetchBlob(RESOURCE_MAP.banList.url);
+            banText = blob;
+            await resSet('banList', blob);
+        } catch (e) {
+            console.warn('FTAC: Не удалось загрузить BanList', e);
+            return { banned: false, reason: null, updated: false };
+        }
+    }
+    const text = await banText.text();
+    const parsed = parseBanList(text);
+    const remoteVersion = parsed.version;
+
+    const localVersion = localStorage.getItem(FTAC_LOCAL_VERSION_KEY);
+    let updated = false;
+
+    // Если версии отличаются – обновляем
+    if (!localVersion || localVersion !== remoteVersion) {
+        updated = true;
+        // Показываем уведомление об обновлении FTAC
+        const goUpdate = await showFTACUpdateNotification();
+        if (!goUpdate) {
+            // Если пользователь отказался – проверяем по старому
+            if (parsed.bans[userId]) {
+                return { banned: true, reason: parsed.bans[userId], updated: false };
+            }
+            return { banned: false, reason: null, updated: false };
+        }
+        // Удаляем старый BanList и скачиваем новый
+        await resDelete('banList');
+        try {
+            const newBlob = await fetchBlob(RESOURCE_MAP.banList.url);
+            await resSet('banList', newBlob);
+            const newText = await newBlob.text();
+            const newParsed = parseBanList(newText);
+            localStorage.setItem(FTAC_LOCAL_VERSION_KEY, remoteVersion);
+            if (newParsed.bans[userId]) {
+                return { banned: true, reason: newParsed.bans[userId], updated: true };
+            }
+            return { banned: false, reason: null, updated: true };
+        } catch (e) {
+            console.warn('FTAC: Ошибка обновления BanList', e);
+            return { banned: false, reason: null, updated: false };
+        }
+    }
+
+    // Версия совпадает – просто проверяем
+    if (parsed.bans[userId]) {
+        return { banned: true, reason: parsed.bans[userId], updated: false };
+    }
+    return { banned: false, reason: null, updated: false };
+}
+
+function showFTACUpdateNotification() {
+    return new Promise(resolve => {
+        $('updCount').textContent = 'Обновление AntiCheat';
+        $('updateNotification').classList.add('show');
+        haptic('medium');
+        $('updBtn').onclick = () => {
+            $('updateNotification').classList.remove('show');
+            resolve(true);
+        };
+        // Таймаут: если не нажали – считаем что согласны
+        setTimeout(() => {
+            if ($('updateNotification').classList.contains('show')) {
+                $('updateNotification').classList.remove('show');
+                resolve(true);
+            }
+        }, 8000);
+    });
+}
+
+function showBanScreen(){
+    const screen = document.getElementById('ftacBanScreen');
+    screen.style.display = 'flex';
+    document.body.classList.add('paused');
+
+    getResourceURL('ftacAvatar').then(url => {
+        document.getElementById('ftacAvatar').src = url || RESOURCE_MAP.ftacAvatar.url;
+    });
+
+    document.getElementById('ftacBanReasonDisplay').textContent = ftacBanReason || 'Unknown';
+
+    document.getElementById('ftacExitBtn').onclick = () => {
+        try { if (tg && typeof tg.close === 'function') tg.close(); } catch(e) {}
+        try { window.close(); } catch(e) {}
+    };
+
+    document.getElementById('ftacContactBtn').onclick = () => {
+        const userId = ftacBannedUserId || getUserId() || 'Неизвестно';
+        const username = TG_USER && TG_USER.username ? '@' + TG_USER.username : 'Без юзернейма';
+        const text = `✧ Здравствуйте уважаемый @MrFeast_Official ✧\n𓂀 Я был(а) забанен(а) в вашей игре KillerCasino и хочу обговорить с вами мой бан и по возможности обжаловать его чтобы снова получить доступ к вашему казино(игре) ✧\n\n𓆩 Мой ID: ${userId} 𓆪\n✞ Мой юзернейм: ${username} 𓁹`;
+        const url = `https://t.me/MrFeast_Official?text=${encodeURIComponent(text)}`;
+        window.open(url, '_blank');
+    };
+}
+
+// ============================================================
+// === CLOUDSTORAGE + LOCALSTORAGE ДЛЯ СОСТОЯНИЯ ИГРЫ ========
+// ============================================================
+// Исправление #4: эмуляция CloudStorage теперь безопасна
+// Исправление #3: порядок сохранения – сначала local, потом cloud
+// Исправление #1: добавлены версия и updatedAt, выбор свежего
+
+// Эмуляция CloudStorage для локальной разработки
+if (!tg || !tg.CloudStorage) {
+    console.warn('CloudStorage недоступен, используем localStorage с эмуляцией');
+    if (!tg) window.tg = {};
+    if (!tg.CloudStorage) {
+        tg.CloudStorage = {
+            setItem: (key, value, callback) => {
+                try {
+                    localStorage.setItem('cloud_' + key, value);
+                    if (callback) callback(null);
+                } catch (e) {
+                    if (callback) callback(e);
+                }
+            },
+            getItem: (key, callback) => {
+                try {
+                    const val = localStorage.getItem('cloud_' + key);
+                    if (callback) callback(null, val);
+                } catch (e) {
+                    if (callback) callback(e, null);
+                }
+            },
+            removeItem: (key, callback) => {
+                try {
+                    localStorage.removeItem('cloud_' + key);
+                    if (callback) callback(null);
+                } catch (e) {
+                    if (callback) callback(e);
+                }
+            },
+            getKeys: (callback) => {
+                try {
+                    const keys = [];
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const k = localStorage.key(i);
+                        if (k && k.startsWith('cloud_')) keys.push(k.slice(6));
+                    }
+                    if (callback) callback(null, keys);
+                } catch (e) {
+                    if (callback) callback(e, null);
+                }
+            }
+        };
+    }
+}
+
+function saveToCloud(key, value, callback) {
+    if (!tg || !tg.CloudStorage) {
+        console.warn('CloudStorage недоступен, сохраняем только в localStorage');
+        if (callback) callback(false);
+        return;
+    }
+    try {
+        const str = typeof value === 'string' ? value : JSON.stringify(value);
+        tg.CloudStorage.setItem(key, str, (err) => {
+            if (err) {
+                console.warn('Ошибка сохранения в CloudStorage:', err);
+                if (callback) callback(false);
+            } else {
+                if (callback) callback(true);
+            }
+        });
+    } catch (e) {
+        console.warn('Ошибка сериализации:', e);
+        if (callback) callback(false);
+    }
+}
+
+function loadFromCloud(key, callback) {
+    if (!tg || !tg.CloudStorage) {
+        if (callback) callback(null);
+        return;
+    }
+    tg.CloudStorage.getItem(key, (err, value) => {
+        if (err || value === null || value === undefined) {
+            if (callback) callback(null);
+            return;
+        }
+        try {
+            const parsed = JSON.parse(value);
+            if (callback) callback(parsed);
+        } catch (e) {
+            if (callback) callback(value);
+        }
+    });
+}
+
+function removeFromCloud(key, callback) {
+    if (!tg || !tg.CloudStorage) {
+        if (callback) callback(false);
+        return;
+    }
+    tg.CloudStorage.removeItem(key, (err) => {
+        if (err) {
+            if (callback) callback(false);
+        } else {
+            if (callback) callback(true);
+        }
+    });
+}
+
+let saveTimeout = null;
+
+function scheduleSave() {
+    if (saveTimeout) clearTimeout(saveTimeout);
+    saveTimeout = setTimeout(() => {
+        saveGameState();
+        saveTimeout = null;
+    }, 500);
+}
+
+// Исправление #3: сначала локально, потом в облако
+// Исправление #1: добавлены version и updatedAt
+function saveGameState(callback) {
+    const state = {
+        balance: balance,
+        selectedChip: selectedChip,
+        slotBet: slotBet,
+        rocketBet: rocketBet,
+        minesBet: minesBet,
+        minesCount: minesCount,
+        ownedCars: getOwnedCars(),
+        ownedProfileStyles: getOwnedProfileStyles(),
+        currentProfileStyle: getCurrentProfileStyle(),
+        muted: muted,
+        shuqEnabled: shuqToggle.checked,
+        shuqMode: localStorage.getItem('kc_shuq_mode') || 'med',
+        muqEnabled: muqToggle.checked,
+        version: CURRENT_VERSION,
+        updatedAt: Date.now()
+    };
+    // 1. Мгновенно сохраняем в localStorage
+    localStorage.setItem('kc_game_state_backup', JSON.stringify(state));
+    // 2. Асинхронно сохраняем в CloudStorage
+    saveToCloud('kc_game_state', state, (ok) => {
+        if (callback) callback(ok);
+    });
+}
+
+// Исправление #1: загрузка с выбором более свежего сохранения
+function loadGameState(callback) {
+    let localData = null;
+    const localBackup = localStorage.getItem('kc_game_state_backup');
+    if (localBackup) {
+        try { localData = JSON.parse(localBackup); } catch(e) {}
+    }
+
+    loadFromCloud('kc_game_state', (cloudData) => {
+        let dataToApply = null;
+        let source = 'none';
+
+        if (cloudData && localData) {
+            const cloudTime = cloudData.updatedAt || 0;
+            const localTime = localData.updatedAt || 0;
+            if (cloudTime > localTime) {
+                dataToApply = cloudData;
+                source = 'cloud';
+            } else {
+                dataToApply = localData;
+                source = 'local';
+            }
+        } else if (cloudData) {
+            dataToApply = cloudData;
+            source = 'cloud';
+        } else if (localData) {
+            dataToApply = localData;
+            source = 'local';
+        }
+
+        if (dataToApply) {
+            applyGameState(dataToApply);
+            if (source === 'cloud') {
+                // синхронизируем локальную копию с облачной
+                localStorage.setItem('kc_game_state_backup', JSON.stringify(dataToApply));
+            }
+            if (callback) callback(true);
+        } else {
+            // нет сохранений – используем значения по умолчанию (уже заданы в коде)
+            if (callback) callback(false);
+        }
+    });
+}
+
+function applyGameState(state) {
+    if (state.balance !== undefined) {
+        balance = state.balance;
+        localStorage.setItem('kc_balance', balance);
+        renderBalance();
+    }
+    if (state.selectedChip !== undefined) {
+        selectedChip = state.selectedChip;
+        renderChips();
+    }
+    if (state.slotBet !== undefined) {
+        slotBet = state.slotBet;
+        renderSlotBet();
+    }
+    if (state.rocketBet !== undefined) {
+        rocketBet = state.rocketBet;
+        renderRocketBet();
+    }
+    if (state.minesBet !== undefined) {
+        minesBet = state.minesBet;
+        renderMinesBet();
+    }
+    // МИКРОЗАМЕЧАНИЕ: проверка корректности количества мин
+    if (state.minesCount !== undefined && MINES_OPTIONS.includes(state.minesCount)) {
+        minesCount = state.minesCount;
+        renderMinesModes();
+        updateMinesInfo();
+    }
+    if (state.ownedCars) {
+        setOwnedCars(state.ownedCars);
+        renderCars();
+    }
+    if (state.ownedProfileStyles) {
+        setOwnedProfileStyles(state.ownedProfileStyles);
+        renderCustomList();
+    }
+    if (state.currentProfileStyle) {
+        setCurrentProfileStyle(state.currentProfileStyle);
+        applyCurrentProfileStyle();
+    }
+    if (state.muted !== undefined) {
+        muted = state.muted;
+        localStorage.setItem('kc_muted', muted ? '1' : '0');
+        renderSound();
+        if (loaderVideo) loaderVideo.muted = muted;
+        if (muted) {
+            if (bgAudio && !bgAudio.paused) bgAudio.pause();
+        } else {
+            if (bgAudio && bgAudio.paused && bgMusicReady) startBgMusic();
+        }
+    }
+    if (state.shuqEnabled !== undefined) {
+        shuqToggle.checked = state.shuqEnabled;
+        localStorage.setItem('kc_shuq', state.shuqEnabled ? '1' : '0');
+        updateShuqUI();
+        applyGraphicsSettings();
+    }
+    if (state.shuqMode) {
+        savedShuqMode = state.shuqMode;
+        localStorage.setItem('kc_shuq_mode', state.shuqMode);
+        updateShuqUI();
+        applyGraphicsSettings();
+    }
+    if (state.muqEnabled !== undefined) {
+        muqToggle.checked = state.muqEnabled;
+        localStorage.setItem('kc_muq', state.muqEnabled ? '1' : '0');
+        applyGraphicsSettings();
+    }
+}
+
+// ============================================================
+// === ОСТАЛЬНОЙ СКРИПТ (оригинальный, с небольшими изменениями) ===
+// ============================================================
+
 function altUrls(u){
 const list=[u];
 if(u.startsWith('https://github.com/')&&u.includes('/raw/')){
@@ -1187,6 +1986,7 @@ await resDelete(r.id);
 if(urlCache[r.id]){URL.revokeObjectURL(urlCache[r.id]);delete urlCache[r.id];}
 if(r.id==='music') musicBlob=null;
 if(r.id==='bgMusic') bgMusicBlob=null;
+if(r.id==='ftacAvatar') ftacAvatarBlob=null;
 const p = ((i+1)/Math.max(1,total))*15;
 msg.textContent = `// Удаляем старые патчи игры ${i+1}/${total}`;
 paintProgress(p, 100, fill, pct, null);
@@ -1208,7 +2008,7 @@ const now=performance.now();
 if(now-lastUpdate>60){ lastUpdate=now; const phaseP=15+(downloaded/Math.max(1,totalExpected))*60; paintProgress(phaseP,100,fill,pct,lbSize); lbSize.textContent=`${formatSize(downloaded)} / ${formatSize(totalExpected)}`; }
 });
 const ok=await resSet(r.id,blob);
-if(ok){ if(urlCache[r.id]){URL.revokeObjectURL(urlCache[r.id]);delete urlCache[r.id];} if(r.id==='music')musicBlob=blob; if(r.id==='bgMusic')bgMusicBlob=blob; downloaded=startDownloaded+blob.size; }
+if(ok){ if(urlCache[r.id]){URL.revokeObjectURL(urlCache[r.id]);delete urlCache[r.id];} if(r.id==='music')musicBlob=blob; if(r.id==='bgMusic')bgMusicBlob=blob; if(r.id==='ftacAvatar')ftacAvatarBlob=blob; downloaded=startDownloaded+blob.size; }
 }catch(e){ console.warn('Патч не скачался:',r.id,e); }
 }
 paintProgress(75,100,fill,pct,lbSize); lbSize.textContent=`${formatSize(totalExpected)} / ${formatSize(totalExpected)}`;
@@ -1275,6 +2075,7 @@ return true;
 return false;
 }
 const urlCache={};
+let ftacAvatarBlob=null;
 async function getResourceURL(id){
 if(urlCache[id])return urlCache[id];
 const blob=await resGet(id);
@@ -1352,6 +2153,7 @@ if(ok){
 if(urlCache[r.id]){URL.revokeObjectURL(urlCache[r.id]);delete urlCache[r.id];}
 if(r.id==='music')musicBlob=blob;
 if(r.id==='bgMusic')bgMusicBlob=blob;
+if(r.id==='ftacAvatar')ftacAvatarBlob=blob;
 downloaded = startDownloaded + blob.size;
 }else{
 console.warn('IndexedDB не сохранил ресурс:',r.id);
@@ -1362,56 +2164,69 @@ console.warn('Ресурс не скачался:',r.id,e);
 }
 onProgress(totalExpected, totalExpected, true);
 }
-let loaderMusic=null, musicBlob=null, bgMusicBlob=null;
-let bgAudio=null;
-let bgMusicPausedByCase=false;
-let bgMusicReady=false;
 
-function tryPlay(a){ try{ const p=a.play(); if(p&&p.catch)p.catch(()=>{}); }catch(e){} }
-function unlockMusic(a){
+// === ВИДЕО LOADER (вместо музыки) ===
+let loaderVideo=null, splashVideoBlob=null;
+let bgMusicBlob=null, bgAudio=null, bgMusicReady=false, bgMusicPausedByCase=false;
+
+function unlockVideo(v){
 const evs=['pointerdown','touchstart','touchend','mousedown','keydown'];
 const h=()=>{
-if(loaderMusic!==a) return;
-if(a.muted) a.muted=false;
-tryPlay(a);
+if(loaderVideo!==v) return;
+if(v.muted) v.muted=false;
+try{ const p=v.play(); if(p&&p.catch)p.catch(()=>{}); }catch(e){}
 };
 const off=()=>evs.forEach(e=>document.removeEventListener(e,h,true));
 evs.forEach(e=>document.addEventListener(e,h,true));
 const chk=setInterval(()=>{
-if(loaderMusic!==a){ clearInterval(chk); off(); return; }
-if(!a.paused && !a.muted){ clearInterval(chk); off(); }
+if(loaderVideo!==v){ clearInterval(chk); off(); return; }
+if(!v.paused && !v.muted){ clearInterval(chk); off(); }
 },250);
 }
-function startLoaderMusic(){
-if(loaderMusic) return;
-const a=new Audio();
-a.loop=true; a.volume=.4; a.preload='auto';
-if(musicBlob){
-a.src=URL.createObjectURL(musicBlob);
-}else{
-a.src=RESOURCE_MAP.music.url;
-resGet('music').then(blob=>{
-if(!blob) return;
-musicBlob=blob;
-if(loaderMusic===a && a.currentTime<0.3){
-a.src=URL.createObjectURL(blob);
-tryPlay(a);
+
+async function startLoaderVideo(){
+if(loaderVideo) return;
+const v = document.getElementById('splashVideo');
+if(!v) return;
+v.loop = true;
+v.playsInline = true;
+v.preload = 'auto';
+v.muted = false;
+v.volume = 0.75;
+
+const blob = await resGet('splashVideo');
+if(blob){
+splashVideoBlob = blob;
+v.src = URL.createObjectURL(blob);
+} else {
+v.src = RESOURCE_MAP.splashVideo.url;
+resGet('splashVideo').then(b=>{
+if(!b) return;
+splashVideoBlob = b;
+if(loaderVideo===v && v.currentTime<0.5){
+v.src = URL.createObjectURL(b);
+try{ v.play(); }catch(e){}
 }
 }).catch(()=>{});
 }
-loaderMusic=a;
-const p=a.play();
-if(p&&p.catch){
+loaderVideo = v;
+const p = v.play();
+if(p && p.catch){
 p.catch(()=>{
-a.muted=true;
-tryPlay(a);
+v.muted = true;
+try{ v.play(); }catch(e){}
 });
 }
-unlockMusic(a);
+unlockVideo(v);
 }
-function stopLoaderMusic(){
-if(loaderMusic){ try{loaderMusic.pause();}catch(e){} loaderMusic=null; }
+
+function stopLoaderVideo(){
+if(loaderVideo){
+try{ loaderVideo.pause(); }catch(e){}
+loaderVideo = null;
 }
+}
+// === КОНЕЦ ВИДЕО LOADER ===
 
 // === ФОНОВАЯ МУЗЫКА ДЛЯ ИГРЫ ===
 function initBgMusic(){
@@ -1477,7 +2292,6 @@ bgAudio = null;
 bgMusicReady = false;
 }
 }
-// === КОНЕЦ ФОНОВОЙ МУЗЫКИ ===
 
 const TG_USER = tg && tg.initDataUnsafe ? tg.initDataUnsafe.user : null;
 function detectOS(){
@@ -1495,11 +2309,13 @@ const name = TG_USER ? ((TG_USER.first_name||'')+' '+(TG_USER.last_name||'')).tr
 document.getElementById('pname').textContent = name || 'Игрок';
 document.getElementById('puser').textContent = TG_USER && TG_USER.username ? '@'+TG_USER.username : '@player';
 const setAva=el=>{ if(TG_USER && TG_USER.photo_url){ const img=new Image(); img.onload=()=>{el.innerHTML='';el.appendChild(img);}; img.src=TG_USER.photo_url; } else el.textContent=(name[0]||'K').toUpperCase(); };
-setAva(document.getElementById('avatar')); setAva(document.getElementById('pmAvatar'));
+setAva(document.getElementById('avatar')); setAva(document.getElementById('pmAvatar')); setAva(document.getElementById('previewAvatar'));
 document.getElementById('pmName').textContent = name || 'Игрок';
 document.getElementById('pmUser').textContent = TG_USER && TG_USER.username ? '@'+TG_USER.username : '@player';
 document.getElementById('pmId').textContent = TG_USER && TG_USER.id ? TG_USER.id : '—';
 document.getElementById('pmOs').textContent = detectOS();
+document.getElementById('previewName').textContent = name || 'Игрок';
+document.getElementById('previewUser').textContent = TG_USER && TG_USER.username ? '@'+TG_USER.username : '@player';
 })();
 (async function(){
 const apis=[
@@ -1512,8 +2328,170 @@ document.getElementById('pmIp').textContent='—'; document.getElementById('pmCi
 })();
 const profileModal=document.getElementById('profileModal');
 document.getElementById('profileBtn').onclick=()=>{profileModal.classList.add('show');haptic('light');};
-document.getElementById('pmClose').onclick=()=>profileModal.classList.remove('show');
+document.getElementById('pmCloseBtn').onclick=()=>profileModal.classList.remove('show');
 profileModal.onclick=e=>{if(e.target===profileModal)profileModal.classList.remove('show');};
+
+// === КАСТОМИЗАЦИЯ ПРОФИЛЯ ===
+const customModal = document.getElementById('customModal');
+const customList = document.getElementById('customList');
+const customPreviewProfile = document.getElementById('customPreviewProfile');
+const customPreviewLabel = document.getElementById('customPreviewLabel');
+const pmCard = document.getElementById('pmCard');
+
+const PROFILE_STYLES = [
+  { id: 'base',    name: 'Базовый',     img: null,                   owned: true,  exclusive: false },
+  { id: 'ninja',   name: 'Ninja Style', img: 'profileStyleNinja',    owned: false, exclusive: false, unlockCase: 'darkStyle' },
+  { id: 'mrfeast', name: 'MrFeast Exclusive', img: 'profileStyle1', owned: true,  exclusive: true,  requiredUser: 'MrFeast_Official' }
+];
+
+function isMrFeast(){
+  return TG_USER && TG_USER.username === 'MrFeast_Official';
+}
+
+function getOwnedProfileStyles(){
+  try{ return JSON.parse(localStorage.getItem('kc_owned_styles')||'["base"]'); }catch(e){ return ['base']; }
+}
+function setOwnedProfileStyles(arr){
+  localStorage.setItem('kc_owned_styles', JSON.stringify(arr));
+}
+function getCurrentProfileStyle(){
+  return localStorage.getItem('kc_current_style') || 'base';
+}
+function setCurrentProfileStyle(id){
+  localStorage.setItem('kc_current_style', id);
+}
+
+async function getVisibleStyles(){
+  const owned = getOwnedProfileStyles();
+  const visible = [];
+  for(const s of PROFILE_STYLES){
+    if(s.exclusive){
+      if(isMrFeast()){
+        visible.push({ ...s, isOwned: true, locked: false });
+      }
+      continue;
+    }
+    const isOwned = owned.includes(s.id);
+    visible.push({ ...s, isOwned, locked: !isOwned });
+  }
+  return visible;
+}
+
+async function applyCurrentProfileStyle(){
+  const cur = getCurrentProfileStyle();
+  const nameEl = document.getElementById('pmStyleName');
+  if(nameEl){
+    const s = PROFILE_STYLES.find(x=>x.id===cur);
+    nameEl.textContent = s ? s.name : 'Базовый';
+  }
+  if(!pmCard) return;
+  pmCard.classList.remove('with-bg');
+  pmCard.style.setProperty('--bg-image', 'none');
+  if(cur !== 'base'){
+    let url = null;
+    if(cur === 'ninja'){
+      url = await getResourceURL('profileStyleNinja');
+    } else if(cur === 'mrfeast'){
+      url = await getResourceURL('profileStyle1');
+    }
+    if(url){
+      pmCard.style.setProperty('--bg-image', `url('${url}')`);
+      pmCard.classList.add('with-bg');
+    }
+  }
+}
+
+async function renderCustomList(selectedId){
+  customList.innerHTML = '';
+  const styles = await getVisibleStyles();
+  const cur = selectedId || getCurrentProfileStyle();
+  for(const s of styles){
+    const el = document.createElement('div');
+    let cls = 'custom-item';
+    let status = 'заблокировано';
+    let thumb = '<i class="fa-solid fa-palette"></i>';
+    if(s.isOwned && !s.locked){
+      if(s.id === cur){
+        cls += ' selected';
+        status = 'экипировано';
+      } else {
+        status = 'экипировать';
+      }
+    } else {
+      cls += ' locked';
+      status = 'заблокировано';
+    }
+    el.className = cls;
+    if(s.img){
+      const url = await getResourceURL(s.img);
+      if(url) thumb = `<img src="${url}" alt="">`;
+    }
+    el.innerHTML = `
+      <div class="custom-item-top">
+        <div class="custom-item-thumb">${thumb}</div>
+        <div class="custom-item-name">${s.name}</div>
+      </div>
+      <div class="custom-item-status">${status}</div>
+    `;
+    if(!s.locked){
+      el.onclick = async ()=>{
+        setCurrentProfileStyle(s.id);
+        await applyCurrentProfileStyle();
+        await renderCustomList(s.id);
+        await updatePreview(s.id);
+        haptic('success');
+        scheduleSave();
+      };
+    } else {
+      el.onclick = ()=>{
+        haptic('error');
+      };
+    }
+    customList.appendChild(el);
+  }
+}
+
+async function updatePreview(styleId){
+  customPreviewProfile.classList.remove('with-bg');
+  customPreviewProfile.style.setProperty('--bg-image', 'none');
+  customPreviewProfile.style.background = 'linear-gradient(160deg, rgba(76,29,149,.5), rgba(15,8,30,.94))';
+  if(styleId !== 'base'){
+    let url = null;
+    if(styleId === 'ninja'){
+      url = await getResourceURL('profileStyleNinja');
+    } else if(styleId === 'mrfeast'){
+      url = await getResourceURL('profileStyle1');
+    }
+    if(url){
+      customPreviewProfile.style.setProperty('--bg-image', `url('${url}')`);
+      customPreviewProfile.classList.add('with-bg');
+    }
+  }
+  const s = PROFILE_STYLES.find(x=>x.id===styleId);
+  customPreviewLabel.textContent = s ? `Стиль: ${s.name}` : 'Текущий стиль';
+  document.getElementById('previewBalance').textContent = balance.toLocaleString('ru-RU');
+}
+
+document.getElementById('pmStyleBtn').onclick = async ()=>{
+  profileModal.classList.remove('show');
+  customModal.classList.add('show');
+  haptic('light');
+  const cur = getCurrentProfileStyle();
+  await renderCustomList(cur);
+  await updatePreview(cur);
+};
+document.getElementById('customApplyBtn').onclick = ()=>{
+  customModal.classList.remove('show');
+  profileModal.classList.add('show');
+};
+customModal.onclick = (e)=>{
+  if(e.target === customModal){
+    customModal.classList.remove('show');
+  }
+};
+
+setTimeout(()=>applyCurrentProfileStyle(), 1500);
+
 const SEGMENTS=[
 {m:0,  icon:'\uf54c', label:'x0',   color:'#161022'},
 {m:1,  icon:'\uf005', label:'x1',   color:'#33205c'},
@@ -1594,7 +2572,10 @@ const balanceEl=$('balance'),spinBtn=$('spinBtn'),cardsBtn=$('cardsBtn'),bonusBt
 wheelEl=$('wheel'),wheelWrap=$('wheelWrap'),deckEl=$('deck'),balanceCard=$('balanceCard'),
 slotsBtn=$('slotsBtn'),slotBanner=$('slotBanner');
 function currentBet(){const v=CHIP_VALUES[selectedChip];return v==='MAX'?Math.max(0,Math.floor(balance)):v;}
-function save(){localStorage.setItem('kc_balance',balance);}
+function save(){
+    localStorage.setItem('kc_balance', balance);
+    scheduleSave();
+}
 let shownBal=0;
 function renderBalance(){
 const from=shownBal,to=balance,t0=performance.now();
@@ -1610,7 +2591,7 @@ CHIP_VALUES.forEach((v,i)=>{
 const c=document.createElement('button');
 c.className='chip'+(i===selectedChip?' active':'');
 c.textContent=v==='MAX'?'MAX':v;
-c.onclick=()=>{selectedChip=i;haptic('light');renderChips();};
+c.onclick=()=>{selectedChip=i;haptic('light');renderChips();scheduleSave();};
 box.appendChild(c);
 });
 });
@@ -1659,11 +2640,13 @@ soundToggle.onchange=()=>{
 muted=!soundToggle.checked;
 localStorage.setItem('kc_muted',muted?'1':'0');
 haptic('light');
+if(loaderVideo) loaderVideo.muted = muted;
 if(muted){
 if(bgAudio && !bgAudio.paused) bgAudio.pause();
 }else{
 if(bgAudio && bgAudio.paused && bgMusicReady && !caseOpening && !loaderBusy && !fixBusy) startBgMusic();
 }
+scheduleSave();
 };
 const shuqSection=$('shuqSection'), muqSection=$('muqSection');
 const shuqToggle=$('shuqToggle'), muqToggle=$('muqToggle');
@@ -1710,8 +2693,17 @@ btn.classList.toggle('active', btn.dataset.mode === savedShuqMode);
 });
 }
 updateShuqUI();
-shuqToggle.onchange = ()=>{ haptic('light'); updateShuqUI(); applyGraphicsSettings(); };
-muqToggle.onchange = ()=>{ haptic('light'); applyGraphicsSettings(); };
+shuqToggle.onchange = ()=>{
+    haptic('light');
+    updateShuqUI();
+    applyGraphicsSettings();
+    scheduleSave();
+};
+muqToggle.onchange = ()=>{
+    haptic('light');
+    applyGraphicsSettings();
+    scheduleSave();
+};
 shuqModeBtns.forEach(btn=>{
 btn.onclick = ()=>{
 if(!shuqToggle.checked) return;
@@ -1720,6 +2712,7 @@ localStorage.setItem('kc_shuq_mode', savedShuqMode);
 updateShuqUI();
 applyGraphicsSettings();
 haptic('light');
+scheduleSave();
 };
 });
 applyGraphicsSettings(true);
@@ -1759,6 +2752,11 @@ if($('caseVideoOverlay').classList.contains('show')){
 if(!caseVideoBusy) $('cvOk').onclick();
 return;
 }
+if(customModal.classList.contains('show')){
+customModal.classList.remove('show');
+profileModal.classList.add('show');
+return;
+}
 const caseModalEl = $('caseModal');
 if(caseModalEl && caseModalEl.classList.contains('show') && !caseOpening){
 closeCaseModal();
@@ -1771,6 +2769,7 @@ showScreen('menuScreen');
 document.addEventListener('keydown',(e)=>{
 if(e.key!=='Escape')return;
 if($('caseVideoOverlay').classList.contains('show')){ if(!caseVideoBusy) $('cvOk').onclick(); return; }
+if(customModal.classList.contains('show')){ customModal.classList.remove('show'); profileModal.classList.add('show'); return; }
 if($('caseModal').classList.contains('show') && !caseOpening) closeCaseModal();
 });
 $('goWheel').onclick=()=>showScreen('wheelScreen');
@@ -1943,13 +2942,13 @@ const box=$('betsSlots');box.innerHTML='';
 const c=document.createElement('button');
 c.className='chip'+(v===slotBet?' active':'');
 c.textContent=v;
-c.onclick=()=>{slotBet=v;haptic('light');renderSlotBet();};
+c.onclick=()=>{slotBet=v;haptic('light');renderSlotBet();scheduleSave();};
 box.appendChild(c);
 });
 }
-$('betHalf').onclick=()=>{slotBet=Math.max(1,Math.floor(slotBet/2));haptic('light');renderSlotBet();};
-$('betDouble').onclick=()=>{slotBet=Math.max(1,slotBet*2);haptic('light');renderSlotBet();};
-$('betMax').onclick=()=>{slotBet=Math.max(1,Math.floor(balance));haptic('light');renderSlotBet();};
+$('betHalf').onclick=()=>{slotBet=Math.max(1,Math.floor(slotBet/2));haptic('light');renderSlotBet();scheduleSave();};
+$('betDouble').onclick=()=>{slotBet=Math.max(1,slotBet*2);haptic('light');renderSlotBet();scheduleSave();};
+$('betMax').onclick=()=>{slotBet=Math.max(1,Math.floor(balance));haptic('light');renderSlotBet();scheduleSave();};
 const SPIN_FILLS=[18,26,34], SPIN_DURS=[2400,3300,4200], BOUNCE_PX=16, SETTLE_MS=260;
 slotsBtn.onclick=()=>{
 if(slotsSpinning)return;
@@ -2089,13 +3088,13 @@ const box=$('betsRocket');box.innerHTML='';
 const c=document.createElement('button');
 c.className='chip'+(v===rocketBet?' active':'');
 c.textContent=v;
-c.onclick=()=>{rocketBet=v;haptic('light');renderRocketBet();};
+c.onclick=()=>{rocketBet=v;haptic('light');renderRocketBet();scheduleSave();};
 box.appendChild(c);
 });
 }
-$('rBetHalf').onclick=()=>{rocketBet=Math.max(1,Math.floor(rocketBet/2));renderRocketBet();};
-$('rBetDouble').onclick=()=>{rocketBet=Math.max(1,rocketBet*2);renderRocketBet();};
-$('rBetMax').onclick=()=>{rocketBet=Math.max(1,Math.floor(balance));renderRocketBet();};
+$('rBetHalf').onclick=()=>{rocketBet=Math.max(1,Math.floor(rocketBet/2));renderRocketBet();scheduleSave();};
+$('rBetDouble').onclick=()=>{rocketBet=Math.max(1,rocketBet*2);renderRocketBet();scheduleSave();};
+$('rBetMax').onclick=()=>{rocketBet=Math.max(1,Math.floor(balance));renderRocketBet();scheduleSave();};
 function rocketPosFor(m){
 const w=rc.width,h=rc.height;
 const xFrac=.15+.7*Math.min(1,(m-1)/9);
@@ -2231,8 +3230,6 @@ drawRocketFrame(1);
 checkState();
 },1700);
 }
-
-// === РЕЖИМ «МИНЫ» ===
 const MINES_CELLS=25;
 const MINES_OPTIONS=[3,5,10,15,20];
 let minesBet=10, minesCount=3, minesState='idle';
@@ -2240,7 +3237,6 @@ let minesField=[], minesPicks=0;
 let minesHistoryArr=[];
 const minesGrid=$('minesGrid'), minesStartBtn=$('minesStartBtn');
 const minesMultEl=$('minesMult'), minesNextEl=$('minesNextMult'), minesWinEl=$('minesWin');
-
 function minesMultiplier(picks){
 if(picks<=0) return 1;
 let m=1;
@@ -2266,7 +3262,7 @@ const box=$('betsMines');box.innerHTML='';
 const c=document.createElement('button');
 c.className='chip'+(v===minesBet?' active':'');
 c.textContent=v;
-c.onclick=()=>{if(minesState==='playing')return; minesBet=v;haptic('light');renderMinesBet();};
+c.onclick=()=>{if(minesState==='playing')return; minesBet=v;haptic('light');renderMinesBet();scheduleSave();};
 box.appendChild(c);
 });
 }
@@ -2276,7 +3272,7 @@ MINES_OPTIONS.forEach(v=>{
 const c=document.createElement('button');
 c.className='chip'+(v===minesCount?' active':'');
 c.textContent=v;
-c.onclick=()=>{if(minesState==='playing')return; minesCount=v;haptic('light');renderMinesModes();updateMinesInfo();};
+c.onclick=()=>{if(minesState==='playing')return; minesCount=v;haptic('light');renderMinesModes();updateMinesInfo();scheduleSave();};
 box.appendChild(c);
 });
 }
@@ -2295,9 +3291,9 @@ c.style.cssText=v>=2?'background:rgba(34,197,94,.15);color:#4ade80;border-color:
 box.appendChild(c);
 });
 }
-$('mBetHalf').onclick=()=>{if(minesState==='playing')return; minesBet=Math.max(1,Math.floor(minesBet/2));haptic('light');renderMinesBet();};
-$('mBetDouble').onclick=()=>{if(minesState==='playing')return; minesBet=Math.max(1,minesBet*2);haptic('light');renderMinesBet();};
-$('mBetMax').onclick=()=>{if(minesState==='playing')return; minesBet=Math.max(1,Math.floor(balance));haptic('light');renderMinesBet();};
+$('mBetHalf').onclick=()=>{if(minesState==='playing')return; minesBet=Math.max(1,Math.floor(minesBet/2));haptic('light');renderMinesBet();scheduleSave();};
+$('mBetDouble').onclick=()=>{if(minesState==='playing')return; minesBet=Math.max(1,minesBet*2);haptic('light');renderMinesBet();scheduleSave();};
+$('mBetMax').onclick=()=>{if(minesState==='playing')return; minesBet=Math.max(1,Math.floor(balance));haptic('light');renderMinesBet();scheduleSave();};
 minesStartBtn.onclick=()=>{
 if(minesState==='idle'){
 const bet=minesBet;
@@ -2384,8 +3380,6 @@ updateMinesInfo();
 setTimeout(()=>{buildMinesGrid();checkState();},1200);
 checkState();
 }
-// === КОНЕЦ МИНЫ ===
-
 function finish(m,bet){
 spinning=false;wheelWrap.classList.remove('spinning');
 const win=Math.round(bet*m);
@@ -2414,7 +3408,13 @@ setTimeout(()=>ro.classList.remove('show'),m>0?1900:1500);
 }
 [ro,jo].forEach(o=>o.onclick=()=>o.classList.remove('show'));
 bonusBtn.onclick=()=>{balance+=1000;save();renderBalance();checkState();haptic('success');winSound();spawnConfetti(70);};
+
+// === SHOP ITEMS (с новым Dark_Style) ===
 const SHOP_ITEMS=[
+{id:'darkStyle', name:'Dark_Style', price:0, image:'darkStyleImg', video:'darkStyleVideo', isDarkStyle:true, prizes:[
+{value:0,     weight:95, coins:0, type:'nothing',     label:'Ничего'},
+{value:0,     weight:5,  coins:0, type:'ninja_style', label:'Фон: Ninja Style'}
+]},
 {id:'cyberStart', name:'КиберНачало', price:1000, image:'img5', video:'video', prizes:[
 {value:1000,  weight:65, coins:1},
 {value:1500,  weight:15, coins:3},
@@ -2430,7 +3430,6 @@ const SHOP_ITEMS=[
 {value:150000, weight:1,  coins:15}
 ]}
 ];
-// === АВТОМОБИЛИ (НЕДВИЖИМОСТЬ) — 20 ШТУК, ОТ ДЕШЁВОЙ К ДОРОГОЙ ===
 const CARS=[
 {id:'kord',      name:'Kord Pickup',          price:5000,   image:'img8'},
 {id:'sadillac',  name:'Sadillac Keries 63',   price:10000,  image:'img9'},
@@ -2484,43 +3483,38 @@ balance-=car.price; save(); renderBalance();
 owned.push(car.id); setOwnedCars(owned);
 haptic('success'); winSound(); spawnConfetti(90);
 renderCars(); checkState();
+scheduleSave();
 }
-// === КОНЕЦ АВТО ===
-
-// === ЯРЛЫК НА ГЛАВНОМ ЭКРАНЕ (Telegram API) ===
 const homeBanner=$('homeBanner');
 function normalizeHomeStatus(res){
-  if(!res) return 'unknown';
-  if(typeof res==='string') return res;
-  if(typeof res==='object'){
-    if(res.status) return res.status;
-    if(res.is_added===true) return 'added';
-    if(res.is_added===false) return 'missed';
-  }
-  return 'unknown';
+if(!res) return 'unknown';
+if(typeof res==='string') return res;
+if(typeof res==='object'){
+if(res.status) return res.status;
+if(res.is_added===true) return 'added';
+if(res.is_added===false) return 'missed';
+}
+return 'unknown';
 }
 function maybeShowHomeBanner(){
-  try{
-    if(tg && typeof tg.checkHomeScreenStatus==='function'){
-      tg.checkHomeScreenStatus(function(res){
-        // ярлык уже есть — не предлагаем; нет — предлагаем каждый запуск
-        homeBanner.hidden = (normalizeHomeStatus(res)==='added');
-      });
-    } else {
-      homeBanner.hidden=true;
-    }
-  }catch(e){ homeBanner.hidden=true; }
+try{
+if(tg && typeof tg.checkHomeScreenStatus==='function'){
+tg.checkHomeScreenStatus(function(res){
+homeBanner.hidden = (normalizeHomeStatus(res)==='added');
+});
+} else {
+homeBanner.hidden=true;
+}
+}catch(e){ homeBanner.hidden=true; }
 }
 homeBanner.onclick=()=>{
-  haptic('medium');
-  try{ if(tg && typeof tg.addToHomeScreen==='function') tg.addToHomeScreen(); }catch(e){}
-  homeBanner.hidden=true;
+haptic('medium');
+try{ if(tg && typeof tg.addToHomeScreen==='function') tg.addToHomeScreen(); }catch(e){}
+homeBanner.hidden=true;
 };
 if(tg && typeof tg.onEvent==='function'){
-  try{ tg.onEvent('homeScreenAdded', ()=>{ homeBanner.hidden=true; haptic('success'); }); }catch(e){}
+try{ tg.onEvent('homeScreenAdded', ()=>{ homeBanner.hidden=true; haptic('success'); }); }catch(e){}
 }
-// === КОНЕЦ ЯРЛЫК ===
-
 async function renderShop(){
 const grid=$('shopGrid');
 grid.innerHTML='';
@@ -2528,10 +3522,16 @@ for(const item of SHOP_ITEMS){
 const el=document.createElement('div');
 el.className='shop-item';
 const imgUrl=await getResourceURL(item.image);
+const isFree = item.price === 0;
+const badge = isFree ? '<div class="shop-item-badge">FREE</div>' : '';
+const priceHtml = isFree
+  ? `<div class="shop-item-price free">БЕСПЛАТНО</div>`
+  : `<div class="shop-item-price"><i class="fa-solid fa-coins"></i> ${item.price.toLocaleString('ru-RU')}</div>`;
 el.innerHTML=`
+${badge}
 <img src="${imgUrl}" alt="${item.name}">
 <div class="shop-item-title">${item.name}</div>
-<div class="shop-item-price"><i class="fa-solid fa-coins"></i> ${item.price.toLocaleString('ru-RU')}</div>
+${priceHtml}
 `;
 el.onclick=()=>openCase(item);
 grid.appendChild(el);
@@ -2569,10 +3569,18 @@ coinsHtml += '<div class="chance-coin-mini">K</div>';
 if(prize.coins > 4){
 coinsHtml += `<span class="chance-coin-extra">+${prize.coins - 4}</span>`;
 }
+let valueLabel = '';
+if(prize.type === 'nothing'){
+  valueLabel = `<div class="chance-value">Ничего</div>`;
+} else if(prize.type === 'ninja_style'){
+  valueLabel = `<div class="chance-value" style="color:#4ade80">Ninja Style</div>`;
+} else {
+  valueLabel = `<div class="chance-value">+${prize.value.toLocaleString('ru-RU')}</div>`;
+}
 row.innerHTML = `
 <div class="chance-prize">
-<div class="chance-coins">${coinsHtml}</div>
-<div class="chance-value">+${prize.value.toLocaleString('ru-RU')}</div>
+<div class="chance-coins">${coinsHtml || '<div class="chance-coin-mini" style="opacity:.3">—</div>'}</div>
+${valueLabel}
 </div>
 <div class="chance-percent">${percent}%</div>
 `;
@@ -2593,10 +3601,17 @@ haptic('light');
 }
 function openCase(item){
 if(caseOpening) return;
-if(balance<item.price){ errShake(); return; }
+if(item.price > 0 && balance < item.price){ errShake(); return; }
 currentCaseItem=item;
 getResourceURL(item.image).then(u=>{ $('caseImage').src=u; });
-$('caseOpenBtn').innerHTML='<i class="fa-solid fa-box-open"></i> ОТКРЫТЬ · '+item.price.toLocaleString('ru-RU');
+const openBtn = $('caseOpenBtn');
+if(item.price === 0){
+  openBtn.innerHTML='<i class="fa-solid fa-box-open"></i> ОТКРЫТЬ · БЕСПЛАТНО';
+  openBtn.classList.add('free');
+} else {
+  openBtn.innerHTML='<i class="fa-solid fa-box-open"></i> ОТКРЫТЬ · '+item.price.toLocaleString('ru-RU');
+  openBtn.classList.remove('free');
+}
 $('caseModal').classList.add('show');
 renderCaseChances(item.prizes);
 try{ if(tg && tg.BackButton) tg.BackButton.show(); }catch(e){}
@@ -2605,13 +3620,13 @@ $('caseClose').onclick=closeCaseModal;
 $('caseOpenBtn').onclick=()=>{ openCaseVideo(currentCaseItem); };
 function openCaseVideo(item){
 if(caseVideoBusy||!item) return;
-if(balance<item.price){ errShake(); $('caseModal').classList.add('show'); return; }
+if(item.price > 0 && balance<item.price){ errShake(); $('caseModal').classList.add('show'); return; }
 caseVideoBusy=true; caseOpening=true;
-
 pauseBgMusic();
-
 document.body.classList.add('paused');
-balance-=item.price; save(); renderBalance(); checkState();
+if(item.price > 0){
+  balance-=item.price; save(); renderBalance(); checkState();
+}
 const prizes=item.prizes||SHOP_ITEMS[0].prizes;
 const prize=pickCasePrize(prizes);
 const totalW=prizes.reduce((s,p)=>s+p.weight,0);
@@ -2628,13 +3643,34 @@ if(endHandled||my!==caseVideoToken) return;
 endHandled=true;
 setTimeout(()=>{
 if(my!==caseVideoToken) return;
-$('cvAmount').textContent='+'+prize.value.toLocaleString('ru-RU');
-$('cvChance').textContent='Шанс: '+Math.round(prize.weight/totalW*100)+'%';
+if(prize.type === 'nothing'){
+  $('cvAmount').textContent='Ничего';
+  $('cvChance').textContent='Шанс: '+Math.round(prize.weight/totalW*100)+'%';
+} else if(prize.type === 'ninja_style'){
+  $('cvAmount').textContent='Ninja Style!';
+  $('cvAmount').style.color = '#4ade80';
+  $('cvChance').textContent='Фон профиля разблокирован';
+  const owned = getOwnedProfileStyles();
+  if(!owned.includes('ninja')){
+    owned.push('ninja');
+    setOwnedProfileStyles(owned);
+    scheduleSave();
+  }
+} else {
+  $('cvAmount').textContent='+'+prize.value.toLocaleString('ru-RU');
+  $('cvChance').textContent='Шанс: '+Math.round(prize.weight/totalW*100)+'%';
+  balance+=prize.value; save(); renderBalance();
+}
 reward.classList.add('show');
-balance+=prize.value; save(); renderBalance();
-haptic(prize.value>=10000?'heavy':'success'); winSound();
-if(prize.value>=50000){ spawnConfetti(190,true); jackpotSound(); }
-else if(prize.value>=5000){ spawnConfetti(90); }
+if(prize.type !== 'nothing' && prize.type !== 'ninja_style'){
+  haptic(prize.value>=10000?'heavy':'success'); winSound();
+  if(prize.value>=50000){ spawnConfetti(190,true); jackpotSound(); }
+  else if(prize.value>=5000){ spawnConfetti(90); }
+} else if(prize.type === 'ninja_style'){
+  haptic('heavy'); winSound(); spawnConfetti(120);
+} else {
+  haptic('light');
+}
 setTimeout(()=>{
 if(my!==caseVideoToken) return;
 btns.classList.add('show');
@@ -2660,10 +3696,9 @@ document.body.classList.remove('paused');
 const ov=$('caseVideoOverlay'),vid=$('caseVideo');
 ov.classList.remove('show');
 try{ vid.pause(); vid.removeAttribute('src'); vid.load(); }catch(e){}
-
+$('cvAmount').style.color = '';
 bgMusicPausedByCase=false;
 if(!muted && bgMusicReady && !loaderBusy && !fixBusy) startBgMusic();
-
 $('caseModal').classList.add('show');
 haptic('light');
 };
@@ -2671,9 +3706,8 @@ $('cvMore').onclick=()=>{
 caseVideoToken++;
 document.body.classList.remove('paused');
 $('caseVideoOverlay').classList.remove('show');
-
+$('cvAmount').style.color = '';
 bgMusicPausedByCase=false;
-
 haptic('light');
 openCaseVideo(currentCaseItem);
 };
@@ -2697,15 +3731,30 @@ runLoader('normal');
 return;
 }
 getResourceURL('splash').then(u=>{ if(u)img.src=u; });
+// Предзагрузка FTAC
+(async()=>{
+try {
+const keys = await resKeys();
+if(!keys.includes('ftacAvatar')){
+const blob = await fetchBlob(RESOURCE_MAP.ftacAvatar.url);
+await resSet('ftacAvatar', blob);
+}
+if(!keys.includes('banList')){
+const blob = await fetchBlob(RESOURCE_MAP.banList.url);
+await resSet('banList', blob);
+}
+} catch(e){ console.warn('FTAC предзагрузка:', e); }
+})();
 (async()=>{
 const keys=await resKeys();
-const URGENT=['splash','music','img1','img2','img3','img4','img5'];
+const URGENT=['splash','splashVideo','music','img1','img2','img3','img4','img5'];
 const missing=RESOURCE_LIST.filter(r=>!keys.includes(r.id)&&URGENT.includes(r.id));
-const ordered=[...missing.filter(r=>r.id==='music'),...missing.filter(r=>r.id!=='music')];
+const ordered=[...missing.filter(r=>r.id==='music'||r.id==='splashVideo'),...missing.filter(r=>r.id!=='music'&&r.id!=='splashVideo')];
 ordered.forEach(r=>{
 fetchBlob(r.url).then(b=>{
 if(!b)return;
 if(r.id==='music')musicBlob=b;
+if(r.id==='splashVideo')splashVideoBlob=b;
 resSet(r.id,b);
 }).catch(()=>{});
 });
@@ -2730,9 +3779,7 @@ runLoader('normal');
 }
 async function runLoader(mode){
 if(loaderBusy)return;
-
 if(bgAudio && !bgAudio.paused) bgAudio.pause();
-
 document.body.classList.remove('paused');
 loaderBusy=true;
 const loader=$('loader'),fill=$('lbFill'),pct=$('lbPct'),msg=$('lbMsg'),lbSize=$('lbSize');
@@ -2740,21 +3787,64 @@ loader.classList.remove('done');
 loader.style.cssText='';
 lbSize.style.display='none';
 fill.style.transform='scaleX(0)';pct.textContent='(00.00%)';
-startLoaderMusic();
+await startLoaderVideo();
 applyResourceImages();
-let prog=0;
-await new Promise(res=>{
-const iv=setInterval(()=>{
-prog=Math.min(100,prog+1.2+Math.random()*2.8);
-fill.style.transform=`scaleX(${prog/100})`;
-pct.textContent=`(${prog.toFixed(2).padStart(5,'0')}%)`;
-if(mode==='restart') msg.textContent='// Перезапускаем движок игры';
-else if(prog<25) msg.textContent='// Инициализация игры';
-else if(prog<50) msg.textContent='// Запуск движка';
-else msg.textContent='// Проверка ресурсов игры';
-if(prog>=100){clearInterval(iv);res();}
-},80);
+
+// === ЗАГРУЖАЕМ СОСТОЯНИЕ ИГРЫ (CloudStorage + localStorage) ===
+await new Promise(resolve => {
+    loadGameState((loaded) => {
+        if (loaded) console.log('Состояние загружено из CloudStorage/localStorage');
+        else console.log('Состояние по умолчанию');
+        resolve();
+    });
 });
+
+// === НОВЫЙ ПРОГРЕСС С ЭТАПАМИ ===
+let prog = 0;
+let ftacChecked = false;
+await new Promise(res => {
+    const iv = setInterval(async () => {
+        prog = Math.min(100, prog + 1.2 + Math.random() * 2.8);
+        fill.style.transform = `scaleX(${prog/100})`;
+        pct.textContent = `(${prog.toFixed(2).padStart(5,'0')}%)`;
+        if (mode === 'restart') {
+            msg.textContent = '// Перезапускаем движок игры';
+        } else if (prog < 25) {
+            msg.textContent = '// Инициализация игры';
+        } else if (prog < 45) {
+            msg.textContent = '// Запускаем движок игры';
+        } else if (prog < 75) {
+            msg.textContent = '// Проверяем игрока (FTAC)';
+            if (!ftacChecked && prog >= 48) {
+                ftacChecked = true;
+                (async () => {
+                    const banResult = await checkBanWithUpdate();
+                    if (banResult.banned) {
+                        ftacBanned = true;
+                        ftacBanReason = banResult.reason;
+                        ftacBannedUserId = getUserId();
+                        showBanScreen();
+                        clearInterval(iv);
+                        res();
+                        return;
+                    }
+                })();
+            }
+        } else {
+            msg.textContent = '// Проверка ресурсов игры';
+        }
+        if (prog >= 100) {
+            clearInterval(iv);
+            res();
+        }
+    }, 80);
+});
+
+if (ftacBanned) {
+    loaderBusy = false;
+    return;
+}
+
 const missing=await getMissingResources();
 if(missing.length){
 let totalSize=0;
@@ -2784,13 +3874,12 @@ applyResourceImages();
 renderShop();
 appLoaded=true;
 loaderBusy=false;
-stopLoaderMusic();
+stopLoaderVideo();
 maybeShowHomeBanner();
-
+applyCurrentProfileStyle();
 if(!muted && !fixBusy){
 setTimeout(()=>startBgMusic(), 500);
 }
-
 return;
 }
 const outdated=await getOutdatedResources();
@@ -2810,27 +3899,37 @@ applyResourceImages();
 renderShop();
 appLoaded=true;
 loaderBusy=false;
-stopLoaderMusic();
+stopLoaderVideo();
 maybeShowHomeBanner();
-
+applyCurrentProfileStyle();
 if(!muted && !fixBusy){
 setTimeout(()=>startBgMusic(), 500);
 }
 }
-document.addEventListener('visibilitychange',()=>{
-if(document.hidden){
-hiddenAt=Date.now();
-document.body.classList.add('paused');
-if(bgAudio && !bgAudio.paused) bgAudio.pause();
-}else{
-document.body.classList.remove('paused');
-if(!muted && bgMusicReady && !caseOpening && !loaderBusy && !fixBusy && bgAudio && bgAudio.paused) startBgMusic();
-if(appLoaded&&!loaderBusy&&hiddenAt&&Date.now()-hiddenAt>800){
-runLoader('restart');
-}
-hiddenAt=0;
-}
+// ============================================================
+// ИСПРАВЛЕНИЕ #2: Принудительное сохранение при выходе
+// ============================================================
+window.addEventListener('pagehide', () => {
+    saveGameState();
 });
+
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        // Сохраняем состояние перед уходом в фон
+        saveGameState();
+        hiddenAt = Date.now();
+        document.body.classList.add('paused');
+        if (bgAudio && !bgAudio.paused) bgAudio.pause();
+    } else {
+        document.body.classList.remove('paused');
+        if(!muted && bgMusicReady && !caseOpening && !loaderBusy && !fixBusy && bgAudio && bgAudio.paused) startBgMusic();
+        if(appLoaded&&!loaderBusy&&hiddenAt&&Date.now()-hiddenAt>800){
+            runLoader('restart');
+        }
+        hiddenAt=0;
+    }
+});
+
 let fixBusy=false;
 const fixNotif=$('fixNotification');
 function showFixNotification(title,text,onClose){
@@ -2846,7 +3945,7 @@ if(onClose)onClose();
 }
 async function validateResource(r,blob){
 if(!blob||blob.size===0)return false;
-if(r.id==='splash'||r.id.indexOf('img')===0){
+if(r.id==='splash'||r.id.indexOf('img')===0||r.id==='profileStyle1'||r.id==='profileStyleNinja'||r.id==='darkStyleImg'||r.id==='ftacAvatar'){
 return await new Promise(res=>{
 const u=URL.createObjectURL(blob);
 const im=new Image();
@@ -2856,10 +3955,19 @@ im.onerror=()=>{clearTimeout(to);URL.revokeObjectURL(u);res(false);};
 im.src=u;
 });
 }
+if(r.id==='splashVideo'||r.id==='darkStyleVideo'||r.id==='video'||r.id==='video2'){
+return blob.size>=10000;
+}
 if(r.id.indexOf('voice')===0||r.id.indexOf('sig')===0){
 return blob.size>=10;
 }
-const min=r.id==='music'?50000:r.id==='bgMusic'?50000:r.id.indexOf('video')===0?100000:1000;
+if(r.id==='banList'){
+try {
+const text = await blob.text();
+return text.includes('==BanList==');
+} catch(e){ return false; }
+}
+const min=r.id==='music'?50000:r.id==='bgMusic'?50000:1000;
 return blob.size>=min;
 }
 $('scanFixBtn').onclick=()=>{
@@ -2869,15 +3977,13 @@ runFixHelper();
 };
 async function runFixHelper(){
 fixBusy=true; loaderBusy=true;
-
 if(bgAudio && !bgAudio.paused) bgAudio.pause();
-
 const loader=$('loader'),fill=$('lbFill'),pct=$('lbPct'),msg=$('lbMsg'),lbSize=$('lbSize');
 loader.classList.remove('done');
 loader.style.cssText='';
 lbSize.style.display='none';
 fill.style.transform='scaleX(0)';pct.textContent='(00.00%)';
-startLoaderMusic();
+await startLoaderVideo();
 applyResourceImages();
 const setProg=p=>{
 const q=Math.min(100,Math.max(0,p));
@@ -2898,6 +4004,8 @@ await resDelete(r.id);
 if(urlCache[r.id]){URL.revokeObjectURL(urlCache[r.id]);delete urlCache[r.id];}
 if(r.id==='music')musicBlob=null;
 if(r.id==='bgMusic')bgMusicBlob=null;
+if(r.id==='splashVideo')splashVideoBlob=null;
+if(r.id==='ftacAvatar')ftacAvatarBlob=null;
 console.warn('Fix Helper: повреждённый ресурс удалён:',r.id);
 }
 setProg(10+((i+1)/Math.max(1,present.length))*55);
@@ -2922,10 +4030,9 @@ await runFastUpdate(outdated,loader,fill,pct,msg,lbSize);
 if(!missing.length&&!outdated.length){
 showFixNotification('Все хорошо','Мы не обнаружили битые, устаревшие или недостающие ресурсы игры, можете продолжить играть',()=>{
 loader.classList.add('done');
-stopLoaderMusic();
+stopLoaderVideo();
 loaderBusy=false; fixBusy=false;
 maybeShowHomeBanner();
-
 if(!muted && !caseOpening) startBgMusic();
 });
 return;
@@ -2949,12 +4056,11 @@ document.getElementById('app').classList.add('ready');
 applyResourceImages();
 renderShop();
 appLoaded=true;
-stopLoaderMusic();
+stopLoaderVideo();
 loaderBusy=false;
 showFixNotification('Все хорошо','Мы обновили и скачали все необходимые ресурсы игры для корректной работы',()=>{
 fixBusy=false;
 maybeShowHomeBanner();
-
 if(!muted && !caseOpening) startBgMusic();
 });
 }
@@ -2967,4 +4073,4 @@ renderChips();renderBalance();renderHistory();checkState();buildDeck();idleSlots
 buildMinesGrid();renderMinesBet();renderMinesModes();updateMinesInfo();renderMinesHistory();
 </script>
 </body>
-  </html>
+</html>
