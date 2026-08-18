@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#06030d">
 <title>KillerCasino</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -16,6 +17,11 @@ body{
 font-family:'Manrope',system-ui,sans-serif;background:var(--bg);color:#fff;min-height:100vh;overflow-x:hidden;
 user-select:none; -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none;
 -webkit-touch-callout:none;
+transform: translateZ(0);
+-webkit-transform: translateZ(0);
+will-change: transform, opacity;
+backface-visibility: hidden;
+-webkit-backface-visibility: hidden;
 }
 img, video {
 -webkit-user-drag: none;
@@ -23,27 +29,36 @@ user-drag: none;
 pointer-events: auto;
 }
 body.paused *,body.paused *::before,body.paused *::after{animation-play-state:paused!important}
-body.shuq-low .app, body.shuq-low #splash img, body.shuq-low video {
-filter: contrast(1.05) saturate(1.1) brightness(1.02);
-image-rendering: -webkit-optimize-contrast;
+/* === GPU ACCELERATION & WEBVIEW OPTIMIZATION === */
+.app, .mode-card, .card-inner, .mine-cell, .strip, #wheel, .result-card, 
+.rocket-frame, .slot-frame, .mines-frame, .pm-card, .custom-card, 
+.case-container, #splashVideo, #caseVideo {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
-body.shuq-med .app, body.shuq-med #splash img, body.shuq-med video {
-filter: contrast(1.15) saturate(1.15) brightness(1.05) drop-shadow(0 0 1px rgba(255,255,255,0.1));
-image-rendering: high-quality;
+.mode-card, .card-inner, .strip, #wheel, .rocket-frame {
+  will-change: transform;
 }
-body.shuq-high .app, body.shuq-high #splash img, body.shuq-high video {
-filter: contrast(1.15) saturate(1.2) brightness(1.08) drop-shadow(0 0 2px rgba(255,255,255,0.15));
-transform: translateZ(0);
+.orb, #splashVideo, #caseVideo, .fire {
+  will-change: transform, opacity;
 }
-body.muq-active .app, body.muq-active #splash img, body.muq-active video {
-filter: contrast(1.08) saturate(1.12) brightness(1.03);
-image-rendering: high-quality;
-transform: translateZ(0);
--webkit-transform: translateZ(0);
-backface-visibility: hidden;
-will-change: transform, filter;
-contain: layout style paint;
+.slot-frame, .mines-frame, .deck, .rocket-frame {
+  contain: layout style paint;
 }
+.mode-card img, .shop-item img, .car-item img {
+  transform: translateZ(0);
+  image-rendering: optimizeSpeed;
+}
+canvas {
+  image-rendering: optimizeSpeed;
+}
+.gpu-text {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/* Удалены стили SHUQ и MUQ */
 #splash{position:fixed;inset:0;z-index:300;background:#000;display:flex;align-items:center;justify-content:center;
 transition:opacity .3s;pointer-events:none}
 #splash.hidden{opacity:0}
@@ -169,9 +184,13 @@ background-image:linear-gradient(rgba(139,92,246,.05) 1px,transparent 1px),linea
 background-size:42px 42px;
 -webkit-mask-image:radial-gradient(ellipse at center,black 25%,transparent 75%);
 mask-image:radial-gradient(ellipse at center,black 25%,transparent 75%)}
+/* ИСПРАВЛЕННЫЙ .app — transform объединён в одну строку */
 .app{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:14px 16px 30px;display:flex;flex-direction:column;gap:14px;
-opacity:0;transform:translateY(12px);transition:opacity .5s,transform .5s}
-.app.ready{opacity:1;transform:none}
+opacity:0;transform:translateY(12px) translateZ(0);transition:opacity .5s,transform .5s;
+will-change:transform,opacity;
+backface-visibility:hidden;-webkit-backface-visibility:hidden;
+}
+.app.ready{opacity:1;transform:translateZ(0)}
 .topbar{display:flex;align-items:center;gap:10px}
 .profile{flex:1;display:flex;align-items:center;gap:10px;min-width:0;cursor:pointer;transition:transform .15s;
 background:linear-gradient(135deg,rgba(139,92,246,.16),rgba(217,70,239,.06));
@@ -532,28 +551,12 @@ background:rgba(30,15,60,.45);border:1px solid rgba(139,92,246,.2);margin-bottom
 box-shadow:0 3px 8px rgba(0,0,0,.35);transition:left .25s cubic-bezier(.3,1.2,.4,1)}
 .ios-switch input:checked+.ios-track{background:#34c759}
 .ios-switch input:checked+.ios-track::after{left:22px}
-.shuq-switch input:checked+.ios-track{
-background: linear-gradient(270deg, #ff0000, #ff8c00, #ff00ff, #ff0000);
-background-size: 600% 600%;
-animation: shuqGradientFlow 4s ease infinite;
-box-shadow: 0 0 15px rgba(255, 68, 68, 0.6);
-}
-@keyframes shuqGradientFlow {
-0% { background-position: 0% 50%; }
-50% { background-position: 100% 50%; }
-100% { background-position: 0% 50%; }
-}
+/* Удалены стили SHUQ и MUQ */
 .set-section{padding:14px;border-radius:14px;background:rgba(30,15,60,.45);border:1px solid rgba(139,92,246,.2);margin-bottom:14px}
 .set-section.disabled{opacity:0.5;pointer-events:none;filter:grayscale(1)}
 .set-section-title{font-size:14px;font-weight:800;color:#e9d5ff;display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .set-section-title i{color:#c084fc;width:18px;text-align:center}
 .set-desc{font-size:11.5px;color:#8b7bb8;line-height:1.6;margin-bottom:14px}
-.shuq-modes{display:flex;gap:8px;margin-top:12px;overflow:hidden;max-height:0;opacity:0;transition:all .4s ease}
-.shuq-modes.visible{max-height:60px;opacity:1;margin-bottom:4px}
-.shuq-mode-btn{flex:1;padding:8px 4px;border:1px solid rgba(239,68,68,.3);background:rgba(239,68,68,.1);
-border-radius:8px;color:#fca5a5;font-size:11px;font-weight:700;text-align:center;cursor:pointer;transition:all .2s}
-.shuq-mode-btn.active{background:rgba(239,68,68,.8);color:#fff;border-color:#ef4444;box-shadow:0 0 10px rgba(239,68,68,.4)}
-.shuq-mode-btn span{display:block;font-size:9px;opacity:.7;margin-top:2px}
 .scanfix-btn{width:100%;padding:14px;border:none;border-radius:14px;cursor:pointer;font-family:'Unbounded';
 font-weight:700;font-size:14px;letter-spacing:.06em;color:#fff;
 background:linear-gradient(135deg,#7c3aed,#d946ef);box-shadow:0 8px 24px rgba(124,58,237,.4);transition:transform .15s}
@@ -938,6 +941,19 @@ body.tg-fullscreen .load-news{top:96px}
   #ftacBanScreen .desc { font-size: 12px; }
   .corner-frame { width: 25px; height: 25px; }
 }
+
+/* Отдельное уведомление для FTAC обновления */
+#ftacUpdateNotification .ln-title {
+  text-shadow: none;
+  background: linear-gradient(180deg,#fdf4ff,#e9d5ff 25%,#c084fc 50%,#8b5cf6 75%,#6d28d9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 14px rgba(168,85,247,.8)) drop-shadow(0 0 30px rgba(56,189,248,.35));
+}
+#ftacUpdateNotification .ln-text { color:#e9d5ff; text-shadow:0 0 10px rgba(168,85,247,.55),0 0 22px rgba(56,189,248,.28) }
+#ftacUpdateNotification .ln-btn { background:linear-gradient(135deg,#6d28d9,#a855f7 45%,#d946ef); box-shadow:0 8px 24px rgba(124,58,237,.5),inset 0 1px 0 rgba(255,255,255,.25) }
+#ftacUpdateNotification .ln-btn.upd { background:linear-gradient(135deg,#2563eb,#3b82f6); box-shadow:0 8px 24px rgba(37,99,235,.4) }
 </style>
 </head>
 <body>
@@ -958,7 +974,7 @@ body.tg-fullscreen .load-news{top:96px}
 </div>
 <div class="lb-size" id="lbSize" style="display:none">0 B / 0 B</div>
 <div class="lb-row2">
-<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.2_K2297569_E109786</span>
+<span class="lb-ver">MRFEAST_PROJECT_REL_1.1.4_K2297569_E109786</span>
 <div class="lb-progress"><i id="lbFill"></i></div>
 </div>
 </div>
@@ -978,6 +994,14 @@ body.tg-fullscreen .load-news{top:96px}
     <button class="btn-exit" id="ftacExitBtn">Выйти</button>
     <button class="btn-contact" id="ftacContactBtn">Написать нам</button>
   </div>
+</div>
+
+<!-- Уведомление для FTAC обновления (отдельное) -->
+<div class="loader-notification" id="ftacUpdateNotification">
+<div class="ln-icon update"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+<div class="ln-title">Обновление AntiCheat</div>
+<div class="ln-text">Доступна новая версия AntiCheat системы. Нажмите "Обновить" для загрузки.</div>
+<button class="ln-btn upd" id="ftacUpdBtn"><i class="fa-solid fa-bolt"></i> Обновить</button>
 </div>
 
 <div class="loader-notification" id="loaderNotification">
@@ -1269,27 +1293,7 @@ animation:shine 3s linear infinite,pulse 2s ease-in-out infinite">
 <div class="set-name"><i class="fa-solid fa-volume-high"></i>Звук</div>
 <label class="ios-switch"><input type="checkbox" id="soundToggle"><span class="ios-track"></span></label>
 </div>
-<div class="set-section" id="shuqSection">
-<div class="set-section-title"><i class="fa-solid fa-wand-magic-sparkles"></i>SHUQ-Super High Upscaler Quality</div>
-<div class="set-desc">Включите технологию сглаживания от MrFeastProject для повышения качества изображения или же для повышения FPS</div>
-<div class="set-row" style="margin-bottom:0;padding:0;background:none;border:none">
-<div class="set-name" style="font-size:13px">Активировать SHUQ</div>
-<label class="ios-switch shuq-switch"><input type="checkbox" id="shuqToggle"><span class="ios-track"></span></label>
-</div>
-<div class="shuq-modes" id="shuqModes">
-<div class="shuq-mode-btn" data-mode="low">Low<span>2K Scale</span></div>
-<div class="shuq-mode-btn" data-mode="med">Medium<span>4K Scale</span></div>
-<div class="shuq-mode-btn" data-mode="high">High<span>8K Scale</span></div>
-</div>
-</div>
-<div class="set-section" id="muqSection" style="display:none">
-<div class="set-section-title"><i class="fa-solid fa-mobile-screen"></i>MUQ-Medium Upscaler Quality</div>
-<div class="set-desc">Технология для улучшение качества графики фоток,видио,текстов,а так-же ускорение движка Telegram Mini App для более высокой производительности</div>
-<div class="set-row" style="margin-bottom:0;padding:0;background:none;border:none">
-<div class="set-name" style="font-size:13px">Активировать MUQ</div>
-<label class="ios-switch"><input type="checkbox" id="muqToggle"><span class="ios-track"></span></label>
-</div>
-</div>
+<!-- Удалены блоки SHUQ и MUQ -->
 <div class="set-section">
 <div class="set-section-title"><i class="fa-solid fa-screwdriver-wrench"></i>Проверка и починка ресурсов игры</div>
 <div class="set-desc">Проверьте ресурсов игры и нахождение сломанных ресурсов и их автоматическая починка,а так-же скачивание нехватающих ресурсов</div>
@@ -1382,6 +1386,23 @@ function tryTelegramFS(){ try{ if(tg && typeof tg.requestFullscreen==='function'
 function tryBrowserFS(){ try{ if(!document.fullscreenElement && document.documentElement.requestFullscreen){ document.documentElement.requestFullscreen().then(()=>window.removeEventListener('pointerdown',fsHandler)).catch(()=>{}); } }catch(e){} }
 function fsHandler(){ if(document.fullscreenElement){window.removeEventListener('pointerdown',fsHandler);return;} if(!tryTelegramFS()) tryBrowserFS(); }
 if(/Windows/.test(navigator.userAgent)){ if(!tryTelegramFS()) window.addEventListener('pointerdown',fsHandler); }
+
+// === HARDWARE ACCELERATION SETUP ===
+(function enableHardwareAcceleration(){
+  document.documentElement.style.setProperty('--gpu-force', 'translateZ(0)');
+  document.documentElement.style.scrollBehavior = 'auto';
+  if(isAndroid){
+    document.documentElement.style.setProperty('-webkit-text-size-adjust', 'none');
+    document.querySelectorAll('video').forEach(v => {
+      v.setAttribute('playsinline', '');
+      v.style.transform = 'translateZ(0)';
+      v.style.webkitTransform = 'translateZ(0)');
+    });
+  }
+  if(/Windows/.test(navigator.userAgent)){
+    document.documentElement.style.setProperty('-webkit-font-smoothing', 'antialiased');
+  }
+})();
 
 // === РЕСУРСЫ (с добавлением FTAC) ===
 const RESOURCE_LIST=[
@@ -1524,6 +1545,8 @@ async function checkBanWithUpdate() {
             return { banned: false, reason: null, updated: true };
         } catch (e) {
             console.warn('FTAC: Ошибка обновления BanList', e);
+            // Покажем уведомление об ошибке
+            showFixNotification('Ошибка обновления', 'Не удалось обновить базу AntiCheat. Попробуйте позже.', ()=>{});
             return { banned: false, reason: null, updated: false };
         }
     }
@@ -1535,22 +1558,38 @@ async function checkBanWithUpdate() {
     return { banned: false, reason: null, updated: false };
 }
 
+// Исправление #4: отдельное уведомление для FTAC, своя кнопка
 function showFTACUpdateNotification() {
     return new Promise(resolve => {
-        $('updCount').textContent = 'Обновление AntiCheat';
-        $('updateNotification').classList.add('show');
+        const notif = document.getElementById('ftacUpdateNotification');
+        const updBtn = document.getElementById('ftacUpdBtn');
+        notif.classList.add('show');
         haptic('medium');
-        $('updBtn').onclick = () => {
-            $('updateNotification').classList.remove('show');
-            resolve(true);
+        let resolved = false;
+        const doResolve = (val) => {
+            if(resolved) return;
+            resolved = true;
+            notif.classList.remove('show');
+            resolve(val);
         };
-        // Таймаут: если не нажали – считаем что согласны
+        updBtn.onclick = () => {
+            updBtn.disabled = true;
+            updBtn.innerHTML = ' Обновление...';
+            // Даём время на визуальный фидбек
+            setTimeout(() => {
+                updBtn.disabled = false;
+                updBtn.innerHTML = ' Обновить';
+                doResolve(true);
+            }, 600);
+        };
+        // Таймаут 10 секунд
         setTimeout(() => {
-            if ($('updateNotification').classList.contains('show')) {
-                $('updateNotification').classList.remove('show');
-                resolve(true);
+            if(!resolved){
+                updBtn.disabled = false;
+                updBtn.innerHTML = ' Обновить';
+                doResolve(true);
             }
-        }, 8000);
+        }, 10000);
     });
 }
 
@@ -1711,9 +1750,6 @@ function saveGameState(callback) {
         ownedProfileStyles: getOwnedProfileStyles(),
         currentProfileStyle: getCurrentProfileStyle(),
         muted: muted,
-        shuqEnabled: shuqToggle.checked,
-        shuqMode: localStorage.getItem('kc_shuq_mode') || 'med',
-        muqEnabled: muqToggle.checked,
         version: CURRENT_VERSION,
         updatedAt: Date.now()
     };
@@ -1791,7 +1827,6 @@ function applyGameState(state) {
         minesBet = state.minesBet;
         renderMinesBet();
     }
-    // МИКРОЗАМЕЧАНИЕ: проверка корректности количества мин
     if (state.minesCount !== undefined && MINES_OPTIONS.includes(state.minesCount)) {
         minesCount = state.minesCount;
         renderMinesModes();
@@ -1820,28 +1855,13 @@ function applyGameState(state) {
             if (bgAudio && bgAudio.paused && bgMusicReady) startBgMusic();
         }
     }
-    if (state.shuqEnabled !== undefined) {
-        shuqToggle.checked = state.shuqEnabled;
-        localStorage.setItem('kc_shuq', state.shuqEnabled ? '1' : '0');
-        updateShuqUI();
-        applyGraphicsSettings();
-    }
-    if (state.shuqMode) {
-        savedShuqMode = state.shuqMode;
-        localStorage.setItem('kc_shuq_mode', state.shuqMode);
-        updateShuqUI();
-        applyGraphicsSettings();
-    }
-    if (state.muqEnabled !== undefined) {
-        muqToggle.checked = state.muqEnabled;
-        localStorage.setItem('kc_muq', state.muqEnabled ? '1' : '0');
-        applyGraphicsSettings();
-    }
 }
 
 // ============================================================
 // === ОСТАЛЬНОЙ СКРИПТ (оригинальный, с небольшими изменениями) ===
 // ============================================================
+
+let musicBlob=null;
 
 function altUrls(u){
 const list=[u];
@@ -2611,15 +2631,26 @@ box.appendChild(c);
 });
 });
 }
+// ============================================================
+// ИСПРАВЛЕНИЕ #3: Кнопка бонуса при балансе 0 и активной анимации
+// ============================================================
 function checkState(){
-const broke=balance<1;
-const busy=spinning||deckBusy||roundActive||slotsSpinning||rState==='flying'||caseOpening||minesState==='playing';
-bonusBtn.hidden=!(broke&&!busy);
-spinBtn.disabled=spinning||broke;
-slotsBtn.disabled=slotsSpinning||broke;
-if(!roundActive&&!deckBusy)cardsBtn.disabled=broke;
-if(minesState==='idle') minesStartBtn.disabled=broke;
-else minesStartBtn.disabled=minesPicks<1;
+  const broke = balance < 1;
+  // Проверяем ВСЕ активные анимации и оверлеи
+  const overlayVisible = ro.classList.contains('show') || jo.classList.contains('show');
+  const caseVideoVisible = $('caseVideoOverlay').classList.contains('show');
+  const rocketAnimating = rState === 'flying' || rState === 'crashed';
+  const minesRevealing = minesState === 'revealing';
+  const busy = spinning || deckBusy || roundActive || slotsSpinning 
+    || rocketAnimating || caseOpening || caseVideoBusy 
+    || minesState === 'playing' || minesRevealing 
+    || overlayVisible || caseVideoVisible;
+  bonusBtn.hidden = !(broke && !busy);
+  spinBtn.disabled = spinning || broke;
+  slotsBtn.disabled = slotsSpinning || broke;
+  if(!roundActive && !deckBusy) cardsBtn.disabled = broke;
+  if(minesState === 'idle') minesStartBtn.disabled = broke;
+  else minesStartBtn.disabled = minesPicks < 1;
 }
 function errShake(){haptic('error');balanceCard.classList.add('shake-err');setTimeout(()=>balanceCard.classList.remove('shake-err'),450);}
 let audioCtx=null,muted=localStorage.getItem('kc_muted')==='1';
@@ -2648,74 +2679,9 @@ if(bgAudio && bgAudio.paused && bgMusicReady && !caseOpening && !loaderBusy && !
 }
 scheduleSave();
 };
-const shuqSection=$('shuqSection'), muqSection=$('muqSection');
-const shuqToggle=$('shuqToggle'), muqToggle=$('muqToggle');
-const shuqModes=$('shuqModes');
-const shuqModeBtns=document.querySelectorAll('.shuq-mode-btn');
-if(isAndroid){
-shuqSection.classList.add('disabled');
-muqSection.style.display='block';
-} else {
-shuqSection.classList.remove('disabled');
-muqSection.style.display='none';
-}
-function applyGraphicsSettings(init = false){
-const shuqOn = !isAndroid && shuqToggle.checked;
-const muqOn = isAndroid && muqToggle.checked;
-const shuqMode = localStorage.getItem('kc_shuq_mode') || 'med';
-if(init) {
-document.body.style.transition = 'none';
-}
-document.body.classList.remove('shuq-low','shuq-med','shuq-high','muq-active');
-if(shuqOn){
-document.body.classList.add(`shuq-${shuqMode}`);
-} else if(muqOn){
-document.body.classList.add('muq-active');
-}
-localStorage.setItem('kc_shuq', shuqToggle.checked?'1':'0');
-localStorage.setItem('kc_muq', muqToggle.checked?'1':'0');
-if(init) {
-void document.body.offsetWidth;
-document.body.style.transition = '';
-}
-}
-shuqToggle.checked = localStorage.getItem('kc_shuq')==='1';
-muqToggle.checked = localStorage.getItem('kc_muq')==='1';
-let savedShuqMode = localStorage.getItem('kc_shuq_mode') || 'med';
-function updateShuqUI(){
-if(shuqToggle.checked){
-shuqModes.classList.add('visible');
-} else {
-shuqModes.classList.remove('visible');
-}
-shuqModeBtns.forEach(btn=>{
-btn.classList.toggle('active', btn.dataset.mode === savedShuqMode);
-});
-}
-updateShuqUI();
-shuqToggle.onchange = ()=>{
-    haptic('light');
-    updateShuqUI();
-    applyGraphicsSettings();
-    scheduleSave();
-};
-muqToggle.onchange = ()=>{
-    haptic('light');
-    applyGraphicsSettings();
-    scheduleSave();
-};
-shuqModeBtns.forEach(btn=>{
-btn.onclick = ()=>{
-if(!shuqToggle.checked) return;
-savedShuqMode = btn.dataset.mode;
-localStorage.setItem('kc_shuq_mode', savedShuqMode);
-updateShuqUI();
-applyGraphicsSettings();
-haptic('light');
-scheduleSave();
-};
-});
-applyGraphicsSettings(true);
+
+// Удалены функции applyGraphicsSettings и updateShuqUI, теперь они не нужны
+
 const cv=$('confetti'),cctx=cv.getContext('2d');let parts=[],confAnim=null;
 function spawnConfetti(n,gold){
 cv.width=innerWidth;cv.height=innerHeight;
@@ -3051,7 +3017,10 @@ const f=document.createElement('i');f.className='fa-solid fa-fire fire';
 f.style.left=(5+Math.random()*90)+'%';f.style.animationDelay=(Math.random()*1.6)+'s';
 jo.appendChild(f);setTimeout(()=>f.remove(),4200);
 }
-setTimeout(()=>jo.classList.remove('show'),4000);
+setTimeout(()=>{
+jo.classList.remove('show');
+checkState(); // <-- ДОБАВЛЕНО
+},4000);
 }
 let rocketBet=10, rMult=1, rCrash=1.5, rStart=0, rAnim=null, rCrashAnim=null;
 let rBetAmounts=[0,0], rCashed=[false,false], rocketHistory=[];
@@ -3227,7 +3196,7 @@ rocketMultEl.classList.remove('crashed');
 rocketFrame.classList.remove('crashed');
 rocketStatusEl.textContent='Сделай ставку и жми СТАРТ';
 drawRocketFrame(1);
-checkState();
+checkState(); // <-- УЖЕ БЫЛО, оставляем
 },1700);
 }
 const MINES_CELLS=25;
@@ -3323,14 +3292,18 @@ cell.classList.add('revealed','boom');
 cell.querySelector('.mcf-open i').className='fa-solid fa-bomb';
 haptic('error');loseSound();
 minesRevealAll(idx);
-minesState='idle';
+minesState='revealing'; // <-- ИЗМЕНЕНО: было 'idle'
 minesHistoryArr.unshift(0);if(minesHistoryArr.length>12)minesHistoryArr.pop();renderMinesHistory();
 minesStartBtn.classList.remove('rk-cash');
 minesStartBtn.disabled=false;
 minesStartBtn.innerHTML='<i class="fa-solid fa-bomb"></i>СТАРТ';
 showResult(0,-minesBet);
 updateMinesInfo();
-setTimeout(()=>{buildMinesGrid();checkState();},1600);
+setTimeout(()=>{
+buildMinesGrid();
+minesState='idle';
+checkState();
+},1600);
 checkState();
 }else{
 cell.classList.add('revealed');
@@ -3370,14 +3343,18 @@ haptic(mult>=5?'heavy':'success');winSound();
 if(mult>=10){spawnConfetti(190,true);jackpotSound();}
 else if(mult>=3)spawnConfetti(90);
 minesHistoryArr.unshift(mult);if(minesHistoryArr.length>12)minesHistoryArr.pop();renderMinesHistory();
-minesState='idle';
+minesState='revealing'; // <-- ИЗМЕНЕНО: было 'idle'
 minesRevealAll(-1);
 minesStartBtn.classList.remove('rk-cash');
 minesStartBtn.disabled=false;
 minesStartBtn.innerHTML='<i class="fa-solid fa-bomb"></i>СТАРТ';
 showResult(parseFloat(mult.toFixed(2)),win);
 updateMinesInfo();
-setTimeout(()=>{buildMinesGrid();checkState();},1200);
+setTimeout(()=>{
+buildMinesGrid();
+minesState='idle';
+checkState();
+},1200);
 checkState();
 }
 function finish(m,bet){
@@ -3404,7 +3381,11 @@ mult.textContent='x'+m;mult.classList.toggle('lose',m===0);
 $('resAmount').textContent=(amount>0?'+':'')+amount.toLocaleString('ru-RU');
 $('resSub').textContent=m>0?'ВЫИГРЫШ!':'МИМО…';
 ro.classList.add('show');
-setTimeout(()=>ro.classList.remove('show'),m>0?1900:1500);
+const dur = m > 0 ? 1900 : 1500;
+setTimeout(()=>{
+ro.classList.remove('show');
+checkState(); // <-- ДОБАВЛЕНО
+}, dur);
 }
 [ro,jo].forEach(o=>o.onclick=()=>o.classList.remove('show'));
 bonusBtn.onclick=()=>{balance+=1000;save();renderBalance();checkState();haptic('success');winSound();spawnConfetti(70);};
@@ -3817,18 +3798,28 @@ await new Promise(res => {
             msg.textContent = '// Проверяем игрока (FTAC)';
             if (!ftacChecked && prog >= 48) {
                 ftacChecked = true;
-                (async () => {
-                    const banResult = await checkBanWithUpdate();
-                    if (banResult.banned) {
-                        ftacBanned = true;
-                        ftacBanReason = banResult.reason;
-                        ftacBannedUserId = getUserId();
-                        showBanScreen();
-                        clearInterval(iv);
+                // Останавливаем прогресс пока FTAC не завершит проверку
+                clearInterval(iv);
+                const banResult = await checkBanWithUpdate();
+                if (banResult.banned) {
+                    ftacBanned = true;
+                    ftacBanReason = banResult.reason;
+                    ftacBannedUserId = getUserId();
+                    showBanScreen();
+                    res();
+                    return;
+                }
+                // Продолжаем прогресс если не забанен
+                const iv2 = setInterval(() => {
+                    prog = Math.min(100, prog + 1.2 + Math.random() * 2.8);
+                    fill.style.transform = `scaleX(${prog/100})`;
+                    pct.textContent = `(${prog.toFixed(2).padStart(5,'0')}%)`;
+                    msg.textContent = '// Проверка ресурсов игры';
+                    if (prog >= 100) {
+                        clearInterval(iv2);
                         res();
-                        return;
                     }
-                })();
+                }, 80);
             }
         } else {
             msg.textContent = '// Проверка ресурсов игры';
