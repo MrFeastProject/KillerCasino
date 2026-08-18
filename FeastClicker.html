@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#06030d">
 <title>KillerCasino</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -17,6 +16,7 @@ body{
 font-family:'Manrope',system-ui,sans-serif;background:var(--bg);color:#fff;min-height:100vh;overflow-x:hidden;
 user-select:none; -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none;
 -webkit-touch-callout:none;
+/* GPU acceleration */
 transform: translateZ(0);
 -webkit-transform: translateZ(0);
 will-change: transform, opacity;
@@ -29,6 +29,7 @@ user-drag: none;
 pointer-events: auto;
 }
 body.paused *,body.paused *::before,body.paused *::after{animation-play-state:paused!important}
+
 /* === GPU ACCELERATION & WEBVIEW OPTIMIZATION === */
 .app, .mode-card, .card-inner, .mine-cell, .strip, #wheel, .result-card, 
 .rocket-frame, .slot-frame, .mines-frame, .pm-card, .custom-card, 
@@ -59,6 +60,7 @@ canvas {
   -moz-osx-font-smoothing: grayscale;
 }
 /* Удалены стили SHUQ и MUQ */
+
 #splash{position:fixed;inset:0;z-index:300;background:#000;display:flex;align-items:center;justify-content:center;
 transition:opacity .3s;pointer-events:none}
 #splash.hidden{opacity:0}
@@ -1545,8 +1547,6 @@ async function checkBanWithUpdate() {
             return { banned: false, reason: null, updated: true };
         } catch (e) {
             console.warn('FTAC: Ошибка обновления BanList', e);
-            // Покажем уведомление об ошибке
-            showFixNotification('Ошибка обновления', 'Не удалось обновить базу AntiCheat. Попробуйте позже.', ()=>{});
             return { banned: false, reason: null, updated: false };
         }
     }
@@ -1558,7 +1558,7 @@ async function checkBanWithUpdate() {
     return { banned: false, reason: null, updated: false };
 }
 
-// Исправление #4: отдельное уведомление для FTAC, своя кнопка
+// ИСПРАВЛЕННАЯ функция для FTAC обновления (отдельное уведомление)
 function showFTACUpdateNotification() {
     return new Promise(resolve => {
         const notif = document.getElementById('ftacUpdateNotification');
@@ -1575,14 +1575,12 @@ function showFTACUpdateNotification() {
         updBtn.onclick = () => {
             updBtn.disabled = true;
             updBtn.innerHTML = ' Обновление...';
-            // Даём время на визуальный фидбек
             setTimeout(() => {
                 updBtn.disabled = false;
                 updBtn.innerHTML = ' Обновить';
                 doResolve(true);
             }, 600);
         };
-        // Таймаут 10 секунд
         setTimeout(() => {
             if(!resolved){
                 updBtn.disabled = false;
@@ -4064,4 +4062,4 @@ renderChips();renderBalance();renderHistory();checkState();buildDeck();idleSlots
 buildMinesGrid();renderMinesBet();renderMinesModes();updateMinesInfo();renderMinesHistory();
 </script>
 </body>
-  </html>
+</html>
